@@ -23,6 +23,12 @@ class _TVSeriesDetailPageState extends State<TVSeriesDetailPage> {
     super.initState();
     Future.microtask(() {
       context.read<TVSeriesDetailBloc>().add(OnTVSeriesDetailCalled(widget.id));
+      context
+          .read<TVSeriesRecommendationBloc>()
+          .add(OnTVSeriesRecommendationCalled(widget.id));
+      context
+          .read<TVSeriesWatchlistBloc>()
+          .add(FetchTVSeriesWatchlistStatus(widget.id));
     });
   }
 
