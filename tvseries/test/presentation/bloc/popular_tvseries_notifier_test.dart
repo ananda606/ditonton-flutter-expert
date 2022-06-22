@@ -1,68 +1,78 @@
+import 'package:dartz/dartz.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:core/core.dart';
-import 'package:dartz/dartz.dart';
+import 'package:tvseries/tvseries.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:tv/tv.dart';
 
-import '../../dummy_data/dummy_objects.dart';
-import 'helper/bloc_test_helper.mocks.dart';
+import 'popular_tvseries_notifier_test.mocks.dart';
 
+@GenerateMocks([GetPopularTVSeries])
 void main() {
-  late MockGetPopularTVShows usecase;
-  late TvPopularBloc tvBloc;
+  late MockGetPopularTVSeries mockGetPopularTVSeries;
+  late TVSeriesPopularBloc notifier;
+  late int listenerCallCount;
 
   setUp(() {
-    usecase = MockGetPopularTVShows();
-    tvBloc = TvPopularBloc(usecase);
+    listenerCallCount = 0;
+    mockGetPopularTVSeries = MockGetPopularTVSeries();
+    notifier = TVSeriesPopularBloc(mockGetPopularTVSeries);
   });
 
+  final tTv = TVSeries(
+    backdropPath: '/path.jpg',
+    firstAirDate: 'firstAirDate',
+    genreIds: [1, 2, 3],
+    id: 1,
+    name: 'name',
+    originalName: 'originalName',
+    overview: 'overview',
+    popularity: 1.0,
+    posterPath: '/path.jpg',
+    voteAverage: 1.0,
+    voteCount: 1,
+  );
+
+  final tTvList = <TVSeries>[tTv];
   test('initial state should be empty', () {
-    expect(tvBloc.state, TvPopularEmpty());
+    expect(notifier, TVSeriesPopularEmpty());
+  });
+  blocTest<TVSeriesPopularBloc, TVSeriesPopularState>(
+      'should change state to loading when usecase is called', build: () async {
+    // arrange
+    when(mockGetPopularTVSeries.execute())
+        .thenAnswer((_) async => Right(tTvList));
+    return notifier;},
+    act:
+    // act
+    notifier.fetchPopularTVSeries();
+    // assert
+    expect(notifier.state, RequestState.Loading);
+    expect(listenerCallCount, 1);
   });
 
-  blocTest<TvPopularBloc, TvPopularState>(
-    'should emit [Loading, HasData] when data is gotten successfully',
-    build: () {
-      when(usecase.execute()).thenAnswer((_) async => Right(testTVList));
-      return tvBloc;
-    },
-    act: (bloc) => bloc.add(OnTvPopularCalled()),
-    expect: () => [
-      TvPopularLoading(),
-      TvPopularHasData(testTVList),
-    ],
-    verify: (bloc) {
-      verify(usecase.execute());
-      return OnTvPopularCalled().props;
-    },
-  );
+  test('should change tv data when data is gotten successfully', () async {
+    // arrange
+    when(mockGetPopularTVSeries.execute())
+        .thenAnswer((_) async => Right(tTvList));
+    // act
+    await notifier.fetchPopularTVSeries();
+    // assert
+    expect(notifier.state, RequestState.Loaded);
+    expect(notifier.tvSeries, tTvList);
+    expect(listenerCallCount, 2);
+  });
 
-  blocTest<TvPopularBloc, TvPopularState>(
-    'should emit [Loading, Error] when get data is unsuccessful',
-    build: () {
-      when(usecase.execute())
-          .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
-      return tvBloc;
-    },
-    act: (bloc) => bloc.add(OnTvPopularCalled()),
-    expect: () => [
-      TvPopularLoading(),
-      TvPopularError('Server Failure'),
-    ],
-    verify: (bloc) => TvPopularLoading(),
-  );
-
-  blocTest<TvPopularBloc, TvPopularState>(
-    'should emit [Loading, Empty] when get data is empty',
-    build: () {
-      when(usecase.execute()).thenAnswer((_) async => const Right([]));
-      return tvBloc;
-    },
-    act: (bloc) => bloc.add(OnTvPopularCalled()),
-    expect: () => [
-      TvPopularLoading(),
-      TvPopularEmpty(),
-    ],
-  );
+  test('should return error when data is unsuccessful', () async {
+    // arrange
+    when(mockGetPopularTVSeries.execute())
+        .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
+    // act
+    await notifier.fetchPopularTVSeries();
+    // assert
+    expect(notifier.state, RequestState.Error);
+    expect(notifier.message, 'Server Failure');
+    expect(listenerCallCount, 2);
+  });
 }
