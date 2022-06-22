@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:ditonton/domain/usecases/get_watchlist_movies.dart';
+
+import 'package:watchlist/watchlist.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
