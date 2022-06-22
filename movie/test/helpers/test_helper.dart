@@ -4,13 +4,9 @@ import 'package:http/http.dart' as http;
 
 @GenerateMocks([
   MovieRepository,
-  TVSeriesRepository,
   MovieRemoteDataSource,
-  TVSeriesRemoteDataSource,
   MovieLocalDataSource,
-  TVSeriesLocalDataSource,
   DatabaseHelper,
-  DatabaseHelperTVSeries,
 ], customMocks: [
   MockSpec<http.Client>(as: #MockHttpClient)
 ])

@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
   DatabaseHelper,
   DatabaseHelperTVSeries,
 ], customMocks: [
-  MockSpec<http.Client>(as: #MockHttpClient)
+  MockSpec<http.Client>(as: #MockHttpClient),
+  MockSpec<ApiIOClient>(as: #MockApiIOClient),
 ])
 void main() {}
