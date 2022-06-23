@@ -20,7 +20,7 @@ void main() {
     notifier = TVSeriesPopularBloc(mockGetPopularTVSeries);
   });
 
-  final tTv = TVSeries(
+  final tTVSeries = TVSeries(
     backdropPath: '/path.jpg',
     firstAirDate: 'firstAirDate',
     genreIds: [1, 2, 3],
@@ -34,15 +34,16 @@ void main() {
     voteCount: 1,
   );
 
-  final tTvList = <TVSeries>[tTv];
+  final tTVSeriesList = <TVSeries>[tTVSeries];
   test('initial state should be empty', () {
     expect(notifier, TVSeriesPopularEmpty());
   });
   blocTest<TVSeriesPopularBloc, TVSeriesPopularState>(
-      'should change state to loading when usecase is called', build: () async {
+      'should change state to loading when usecase is called', 
+    build: () async {
     // arrange
     when(mockGetPopularTVSeries.execute())
-        .thenAnswer((_) async => Right(tTvList));
+        .thenAnswer((_) async => Right(tTVSeriesList));
     return notifier;},
     act:
     // act
@@ -50,17 +51,17 @@ void main() {
     // assert
     expect(notifier.state, RequestState.Loading);
     expect(listenerCallCount, 1);
-  });
+);  }
 
   test('should change tv data when data is gotten successfully', () async {
     // arrange
     when(mockGetPopularTVSeries.execute())
-        .thenAnswer((_) async => Right(tTvList));
+        .thenAnswer((_) async => Right(tTVSeriesList));
     // act
     await notifier.fetchPopularTVSeries();
     // assert
     expect(notifier.state, RequestState.Loaded);
-    expect(notifier.tvSeries, tTvList);
+    expect(notifier.tvSeries, tTVSeriesList);
     expect(listenerCallCount, 2);
   });
 

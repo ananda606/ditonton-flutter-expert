@@ -8,11 +8,11 @@ import '../../helpers/test_helper.mocks.dart';
 
 void main() {
   late SearchTVSeries usecase;
-  late MockTVSeriesRepository mockTvRepository;
+  late MockTVSeriesRepository mockTVSeriesRepository;
 
   setUp(() {
-    mockTvRepository = MockTVSeriesRepository();
-    usecase = SearchTVSeries(mockTvRepository);
+    mockTVSeriesRepository = MockTVSeriesRepository();
+    usecase = SearchTVSeries(mockTVSeriesRepository);
   });
 
   final tTvs = <TVSeries>[];
@@ -20,7 +20,7 @@ void main() {
 
   test('should get list of TVSeries from the repository', () async {
     // arrange
-    when(mockTvRepository.searchTVSeries(tQuery))
+    when(mockTVSeriesRepository.searchTVSeries(tQuery))
         .thenAnswer((_) async => Right(tTvs));
     // act
     final result = await usecase.execute(tQuery);

@@ -1,3 +1,4 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:core/core.dart';
 import 'package:movie/movie.dart';
@@ -5,73 +6,65 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../dummy_data/dummy_objects.dart';
 import 'popular_movies_notifier_test.mocks.dart';
 
 @GenerateMocks([GetPopularMovies])
 void main() {
-  late MockGetPopularMovies mockGetPopularMovies;
-  late PopularMoviesNotifier notifier;
-  late int listenerCallCount;
+  late MockGetPopularMovies usecase;
+  late MoviePopularBloc movieBloc;
 
   setUp(() {
-    listenerCallCount = 0;
-    mockGetPopularMovies = MockGetPopularMovies();
-    notifier = PopularMoviesNotifier(mockGetPopularMovies)
-      ..addListener(() {
-        listenerCallCount++;
-      });
+    usecase = MockGetPopularMovies();
+    movieBloc = MoviePopularBloc(usecase);
   });
 
-  final tMovie = Movie(
-    adult: false,
-    backdropPath: 'backdropPath',
-    genreIds: [1, 2, 3],
-    id: 1,
-    originalTitle: 'originalTitle',
-    overview: 'overview',
-    popularity: 1,
-    posterPath: 'posterPath',
-    releaseDate: 'releaseDate',
-    title: 'title',
-    video: false,
-    voteAverage: 1,
-    voteCount: 1,
+  test('initial state should be empty', () {
+    expect(movieBloc.state, MoviePopularEmpty());
+  });
+
+  blocTest<MoviePopularBloc, MoviePopularState>(
+    'should emit [Loading, HasData] when data is gotten successfully',
+    build: () {
+      when(usecase.execute()).thenAnswer((_) async => Right(testMovieList));
+      return movieBloc;
+    },
+    act: (bloc) => bloc.add(OnMoviePopularCalled()),
+    expect: () => [
+      MoviePopularLoading(),
+      MoviePopularHasData(testMovieList),
+    ],
+    verify: (bloc) {
+      verify(usecase.execute());
+      return OnMoviePopularCalled().props;
+    },
   );
 
-  final tMovieList = <Movie>[tMovie];
+  blocTest<MoviePopularBloc, MoviePopularState>(
+    'should emit [Loading, Error] when get data is unsuccessful',
+    build: () {
+      when(usecase.execute())
+          .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
+      return movieBloc;
+    },
+    act: (bloc) => bloc.add(OnMoviePopularCalled()),
+    expect: () => [
+      MoviePopularLoading(),
+      MoviePopularError('Server Failure'),
+    ],
+    verify: (bloc) => MoviePopularLoading(),
+  );
 
-  test('should change state to loading when usecase is called', () async {
-    // arrange
-    when(mockGetPopularMovies.execute())
-        .thenAnswer((_) async => Right(tMovieList));
-    // act
-    notifier.fetchPopularMovies();
-    // assert
-    expect(notifier.state, RequestState.Loading);
-    expect(listenerCallCount, 1);
-  });
-
-  test('should change movies data when data is gotten successfully', () async {
-    // arrange
-    when(mockGetPopularMovies.execute())
-        .thenAnswer((_) async => Right(tMovieList));
-    // act
-    await notifier.fetchPopularMovies();
-    // assert
-    expect(notifier.state, RequestState.Loaded);
-    expect(notifier.movies, tMovieList);
-    expect(listenerCallCount, 2);
-  });
-
-  test('should return error when data is unsuccessful', () async {
-    // arrange
-    when(mockGetPopularMovies.execute())
-        .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
-    // act
-    await notifier.fetchPopularMovies();
-    // assert
-    expect(notifier.state, RequestState.Error);
-    expect(notifier.message, 'Server Failure');
-    expect(listenerCallCount, 2);
-  });
+  blocTest<MoviePopularBloc, MoviePopularState>(
+    'should emit [Loading, Empty] when get data is empty',
+    build: () {
+      when(usecase.execute()).thenAnswer((_) async => const Right([]));
+      return movieBloc;
+    },
+    act: (bloc) => bloc.add(OnMoviePopularCalled()),
+    expect: () => [
+      MoviePopularLoading(),
+      MoviePopularEmpty(),
+    ],
+  );
 }
