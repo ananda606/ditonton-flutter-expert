@@ -5,123 +5,16 @@ import 'package:mocktail/mocktail.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:watchlist/watchlist.dart';
 import 'package:movie/movie.dart';
-import 'package:search/presentation/pages/search_page.dart';
+import 'package:search/search.dart';
 import 'package:core/core.dart';
+import 'test_helper/test_helper.dart';
 
 import '../../dummy_data/dummy_objects.dart';
 
-class FakeHome extends StatelessWidget {
-  const FakeHome({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListTile(
-        key: const Key('fakeHome'),
-        onTap: () {
-          Navigator.pushNamed(context, '/next');
-        },
-      ),
-      appBar: AppBar(
-        title: const Text('fakeHome'),
-        leading: const Icon(Icons.menu),
-      ),
-    );
-  }
-}
-
-class FakeDestination extends StatelessWidget {
-  const FakeDestination({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListTile(
-        key: const Key('fakeDestination'),
-        onTap: () {
-          Navigator.pop(context);
-        },
-        title: const Text('fake Destination'),
-        leading: const Icon(Icons.check),
-      ),
-    );
-  }
-}
-
-MaterialApp testableMaterialApp(routes, page) {
-  return MaterialApp(
-    theme: ThemeData.dark().copyWith(
-      colorScheme: kColorScheme,
-      primaryColor: kRichBlack,
-      scaffoldBackgroundColor: kRichBlack,
-      textTheme: kTextTheme,
-    ),
-    home: page,
-  );
-}
-
-/// movie list fake
-class FakeMovieListEvent extends Fake implements MovieListEvent {}
-
-class FakeMovieListState extends Fake implements MovieListState {}
-
-class FakeMovieListBloc extends MockBloc<MovieListEvent, MovieListState>
-    implements MovieListBloc {}
-
-/// popular movie fake
-class FakePopularMovieEvent extends Fake implements MoviePopularEvent {}
-
-class FakePopularMovieState extends Fake implements MoviePopularState {}
-
-class FakePopularMovieBloc
-    extends MockBloc<MoviePopularEvent, MoviePopularState>
-    implements MoviePopularBloc {}
-
-/// top rated movie fake
-class FakeTopRatedMovieEvent extends Fake implements MovieTopRatedEvent {}
-
-class FakeTopRatedMovieState extends Fake implements MovieTopRatedState {}
-
-class FakeTopRatedMovieBloc
-    extends MockBloc<MovieTopRatedEvent, MovieTopRatedState>
-    implements MovieTopRatedBloc {}
-
-/// detail movie fake
-class FakeMovieDetailEvent extends Fake implements MovieDetailEvent {}
-
-class FakeMovieDetailState extends Fake implements MovieDetailState {}
-
-class FakeMovieDetailBloc extends MockBloc<MovieDetailEvent, MovieDetailState>
-    implements MovieDetailBloc {}
-
-/// recommendation movie fake
-class FakeRecommendationMovieEvent extends Fake
-    implements MovieRecommendationEvent {}
-
-class FakeRecommendationMovieState extends Fake
-    implements MovieRecommendationState {}
-
-class FakeRecommendationMovieBloc
-    extends MockBloc<MovieRecommendationEvent, MovieRecommendationState>
-    implements MovieRecommendationBloc {}
-
-/// watchlist movie fake
-class FakeMovieWatchlistEvent extends Fake implements MovieWatchlistEvent {}
-
-class FakeMovieWatchlistState extends Fake implements MovieWatchlistState {}
-
-class FakeMovieWatchlistBloc
-    extends MockBloc<MovieWatchlistEvent, MovieWatchlistState>
-    implements MovieWatchlistBloc {}
-
 void main() {
   late FakeMovieListBloc fakeMovieListBloc;
-  late FakePopularMovieBloc fakePopularMovieBloc;
-  late FakeTopRatedMovieBloc fakeTopRatedMovieBloc;
+  late FakePopularMovieBloc fakeMoviePopularBloc;
+  late FakeTopRatedMovieBloc fakeMovieTopBloc;
 
   setUp(() {
     registerFallbackValue(FakeMovieListEvent());
@@ -130,11 +23,11 @@ void main() {
 
     registerFallbackValue(FakePopularMovieEvent());
     registerFallbackValue(FakePopularMovieState());
-    fakePopularMovieBloc = FakePopularMovieBloc();
+    fakeMoviePopularBloc = FakePopularMovieBloc();
 
     registerFallbackValue(FakeTopRatedMovieEvent());
     registerFallbackValue(FakeTopRatedMovieState());
-    fakeTopRatedMovieBloc = FakeTopRatedMovieBloc();
+    fakeMovieTopBloc = FakeTopRatedMovieBloc();
 
     TestWidgetsFlutterBinding.ensureInitialized();
   });
@@ -146,10 +39,10 @@ void main() {
           create: (context) => fakeMovieListBloc,
         ),
         BlocProvider<MoviePopularBloc>(
-          create: (context) => fakePopularMovieBloc,
+          create: (context) => fakeMoviePopularBloc,
         ),
         BlocProvider<MovieTopRatedBloc>(
-          create: (context) => fakeTopRatedMovieBloc,
+          create: (context) => fakeMovieTopBloc,
         ),
       ],
       child: MaterialApp(
@@ -165,10 +58,10 @@ void main() {
           create: (context) => fakeMovieListBloc,
         ),
         BlocProvider<MoviePopularBloc>(
-          create: (context) => fakePopularMovieBloc,
+          create: (context) => fakeMoviePopularBloc,
         ),
         BlocProvider<MovieTopRatedBloc>(
-          create: (context) => fakeTopRatedMovieBloc,
+          create: (context) => fakeMovieTopBloc,
         ),
       ],
       child: body,
@@ -187,8 +80,8 @@ void main() {
   testWidgets('Page should display center progress bar when loading',
       (tester) async {
     when(() => fakeMovieListBloc.state).thenReturn(MovieListLoading());
-    when(() => fakePopularMovieBloc.state).thenReturn(MoviePopularLoading());
-    when(() => fakeTopRatedMovieBloc.state).thenReturn(MovieTopRatedLoading());
+    when(() => fakeMoviePopularBloc.state).thenReturn(MoviePopularLoading());
+    when(() => fakeMovieTopBloc.state).thenReturn(MovieTopRatedLoading());
 
     final progressBarFinder = find.byType(CircularProgressIndicator);
 
@@ -197,30 +90,29 @@ void main() {
     expect(progressBarFinder, findsNWidgets(3));
   });
 
-  testWidgets('Page should display listview movielist when hasdata',
+  testWidgets('Page should display listview tvlist when hasdata',
       (tester) async {
     when(() => fakeMovieListBloc.state)
         .thenReturn(MovieListHasData(testMovieList));
-    when(() => fakePopularMovieBloc.state)
+    when(() => fakeMoviePopularBloc.state)
         .thenReturn(MoviePopularHasData(testMovieList));
-    when(() => fakeTopRatedMovieBloc.state)
+    when(() => fakeMovieTopBloc.state)
         .thenReturn(MovieTopRatedHasData(testMovieList));
 
     final listViewFinder = find.byType(ListView);
-    final movieListFinder = find.byType(MovieList);
+    final tvListFinder = find.byType(MovieList);
 
     await tester.pumpWidget(_createTestableWidget(HomeMoviePage()));
 
     expect(listViewFinder, findsNWidgets(3));
-    expect(movieListFinder, findsNWidgets(3));
+    expect(tvListFinder, findsNWidgets(3));
   });
 
   testWidgets('Page should display error text when error', (tester) async {
     when(() => fakeMovieListBloc.state).thenReturn(MovieListError('error'));
-    when(() => fakePopularMovieBloc.state)
+    when(() => fakeMoviePopularBloc.state)
         .thenReturn(MoviePopularError('error'));
-    when(() => fakeTopRatedMovieBloc.state)
-        .thenReturn(MovieTopRatedError('error'));
+    when(() => fakeMovieTopBloc.state).thenReturn(MovieTopRatedError('error'));
 
     await tester.pumpWidget(_createTestableWidget(HomeMoviePage()));
 
@@ -229,8 +121,8 @@ void main() {
 
   testWidgets('Page should display empty text when empty', (tester) async {
     when(() => fakeMovieListBloc.state).thenReturn(MovieListEmpty());
-    when(() => fakePopularMovieBloc.state).thenReturn(MoviePopularEmpty());
-    when(() => fakeTopRatedMovieBloc.state).thenReturn(MovieTopRatedEmpty());
+    when(() => fakeMoviePopularBloc.state).thenReturn(MoviePopularEmpty());
+    when(() => fakeMovieTopBloc.state).thenReturn(MovieTopRatedEmpty());
 
     await tester.pumpWidget(_createTestableWidget(HomeMoviePage()));
 
@@ -241,9 +133,9 @@ void main() {
       (tester) async {
     when(() => fakeMovieListBloc.state)
         .thenReturn(MovieListHasData(testMovieList));
-    when(() => fakePopularMovieBloc.state)
+    when(() => fakeMoviePopularBloc.state)
         .thenReturn(MoviePopularHasData(testMovieList));
-    when(() => fakeTopRatedMovieBloc.state)
+    when(() => fakeMovieTopBloc.state)
         .thenReturn(MovieTopRatedHasData(testMovieList));
 
     await tester.pumpWidget(MaterialApp(
@@ -260,7 +152,7 @@ void main() {
 
     expect(find.byKey(const Key('see_more_top_rated')), findsOneWidget);
     expect(find.byKey(const Key('see_more_popular')), findsOneWidget);
-    expect(find.byKey(const Key('this_is_home_movie')), findsOneWidget);
+    expect(find.byKey(const Key('this_is_home_tv')), findsOneWidget);
 
     // on tap testing
     await tester.tap(find.byKey(const Key('see_more_popular')));
@@ -271,16 +163,16 @@ void main() {
 
     expect(find.byKey(const Key('see_more_top_rated')), findsNothing);
     expect(find.byKey(const Key('see_more_popular')), findsNothing);
-    expect(find.byKey(const Key('this_is_home_movie')), findsNothing);
+    expect(find.byKey(const Key('this_is_home_tv')), findsNothing);
   });
 
   testWidgets('Tapping on see more (top rated) should go to top rated page',
       (tester) async {
     when(() => fakeMovieListBloc.state)
         .thenReturn(MovieListHasData(testMovieList));
-    when(() => fakePopularMovieBloc.state)
+    when(() => fakeMoviePopularBloc.state)
         .thenReturn(MoviePopularHasData(testMovieList));
-    when(() => fakeTopRatedMovieBloc.state)
+    when(() => fakeMovieTopBloc.state)
         .thenReturn(MovieTopRatedHasData(testMovieList));
 
     await tester.pumpWidget(MaterialApp(
@@ -297,7 +189,7 @@ void main() {
 
     expect(find.byKey(const Key('see_more_top_rated')), findsOneWidget);
     expect(find.byKey(const Key('see_more_popular')), findsOneWidget);
-    expect(find.byKey(const Key('this_is_home_movie')), findsOneWidget);
+    expect(find.byKey(const Key('this_is_home_tv')), findsOneWidget);
 
     // on tap testing
     await tester.tap(find.byKey(const Key('see_more_top_rated')));
@@ -308,16 +200,16 @@ void main() {
 
     expect(find.byKey(const Key('see_more_top_rated')), findsNothing);
     expect(find.byKey(const Key('see_more_popular')), findsNothing);
-    expect(find.byKey(const Key('this_is_home_movie')), findsNothing);
+    expect(find.byKey(const Key('this_is_home_tv')), findsNothing);
   });
 
-  testWidgets('Tapping on now playing card should go to movie detail page',
+  testWidgets('Tapping on now playing card should go to tv detail page',
       (tester) async {
     when(() => fakeMovieListBloc.state)
         .thenReturn(MovieListHasData(testMovieList));
-    when(() => fakePopularMovieBloc.state)
+    when(() => fakeMoviePopularBloc.state)
         .thenReturn(MoviePopularHasData(testMovieList));
-    when(() => fakeTopRatedMovieBloc.state)
+    when(() => fakeMovieTopBloc.state)
         .thenReturn(MovieTopRatedHasData(testMovieList));
 
     await tester.pumpWidget(MaterialApp(
@@ -332,31 +224,31 @@ void main() {
       await tester.pump(const Duration(seconds: 1));
     }
 
-    expect(find.byKey(const Key('now_play_0')), findsOneWidget);
+    expect(find.byKey(const Key('ota_0')), findsOneWidget);
     expect(find.byKey(const Key('popular_0')), findsOneWidget);
     expect(find.byKey(const Key('top_rated_0')), findsOneWidget);
-    expect(find.byKey(const Key('this_is_home_movie')), findsOneWidget);
+    expect(find.byKey(const Key('this_is_home_tv')), findsOneWidget);
 
     // on tap testing
-    await tester.tap(find.byKey(const Key('now_play_0')));
+    await tester.tap(find.byKey(const Key('ota_0')));
 
     for (var i = 0; i < 5; i++) {
       await tester.pump(const Duration(seconds: 1));
     }
 
-    expect(find.byKey(const Key('now_play_0')), findsNothing);
+    expect(find.byKey(const Key('ota_0')), findsNothing);
     expect(find.byKey(const Key('popular_0')), findsNothing);
     expect(find.byKey(const Key('top_rated_0')), findsNothing);
-    expect(find.byKey(const Key('this_is_home_movie')), findsNothing);
+    expect(find.byKey(const Key('this_is_home_tv')), findsNothing);
   });
 
-  testWidgets('Tapping on popular card should go to movie detail page',
+  testWidgets('Tapping on popular card should go to tv detail page',
       (tester) async {
     when(() => fakeMovieListBloc.state)
         .thenReturn(MovieListHasData(testMovieList));
-    when(() => fakePopularMovieBloc.state)
+    when(() => fakeMoviePopularBloc.state)
         .thenReturn(MoviePopularHasData(testMovieList));
-    when(() => fakeTopRatedMovieBloc.state)
+    when(() => fakeMovieTopBloc.state)
         .thenReturn(MovieTopRatedHasData(testMovieList));
 
     await tester.pumpWidget(MaterialApp(
@@ -371,10 +263,10 @@ void main() {
       await tester.pump(const Duration(seconds: 1));
     }
 
-    expect(find.byKey(const Key('now_play_0')), findsOneWidget);
+    expect(find.byKey(const Key('ota_0')), findsOneWidget);
     expect(find.byKey(const Key('popular_0')), findsOneWidget);
     expect(find.byKey(const Key('top_rated_0')), findsOneWidget);
-    expect(find.byKey(const Key('this_is_home_movie')), findsOneWidget);
+    expect(find.byKey(const Key('this_is_home_tv')), findsOneWidget);
 
     // on tap testing
     await tester.tap(find.byKey(const Key('popular_0')));
@@ -383,19 +275,19 @@ void main() {
       await tester.pump(const Duration(seconds: 1));
     }
 
-    expect(find.byKey(const Key('now_play_0')), findsNothing);
+    expect(find.byKey(const Key('ota_0')), findsNothing);
     expect(find.byKey(const Key('popular_0')), findsNothing);
     expect(find.byKey(const Key('top_rated_0')), findsNothing);
-    expect(find.byKey(const Key('this_is_home_movie')), findsNothing);
+    expect(find.byKey(const Key('this_is_home_tv')), findsNothing);
   });
 
-  testWidgets('Tapping on top rated card should go to movie detail page',
+  testWidgets('Tapping on top rated card should go to tv detail page',
       (tester) async {
     when(() => fakeMovieListBloc.state)
         .thenReturn(MovieListHasData(testMovieList));
-    when(() => fakePopularMovieBloc.state)
+    when(() => fakeMoviePopularBloc.state)
         .thenReturn(MoviePopularHasData(testMovieList));
-    when(() => fakeTopRatedMovieBloc.state)
+    when(() => fakeMovieTopBloc.state)
         .thenReturn(MovieTopRatedHasData(testMovieList));
 
     await tester.pumpWidget(MaterialApp(
@@ -410,10 +302,10 @@ void main() {
       await tester.pump(const Duration(seconds: 1));
     }
 
-    expect(find.byKey(const Key('now_play_0')), findsOneWidget);
+    expect(find.byKey(const Key('ota_0')), findsOneWidget);
     expect(find.byKey(const Key('popular_0')), findsOneWidget);
     expect(find.byKey(const Key('top_rated_0')), findsOneWidget);
-    expect(find.byKey(const Key('this_is_home_movie')), findsOneWidget);
+    expect(find.byKey(const Key('this_is_home_tv')), findsOneWidget);
 
     // on tap testing
     await tester.dragUntilVisible(
@@ -427,19 +319,18 @@ void main() {
       await tester.pump(const Duration(seconds: 1));
     }
 
-    expect(find.byKey(const Key('now_play_0')), findsNothing);
+    expect(find.byKey(const Key('ota_0')), findsNothing);
     expect(find.byKey(const Key('popular_0')), findsNothing);
     expect(find.byKey(const Key('top_rated_0')), findsNothing);
-    expect(find.byKey(const Key('this_is_home_movie')), findsNothing);
+    expect(find.byKey(const Key('this_is_home_tv')), findsNothing);
   });
 
-  testWidgets('Tapping search icon should go to movie searchPage',
-      (tester) async {
+  testWidgets('Tapping search icon should go to tv searchPage', (tester) async {
     when(() => fakeMovieListBloc.state)
         .thenReturn(MovieListHasData(testMovieList));
-    when(() => fakePopularMovieBloc.state)
+    when(() => fakeMoviePopularBloc.state)
         .thenReturn(MoviePopularHasData(testMovieList));
-    when(() => fakeTopRatedMovieBloc.state)
+    when(() => fakeMovieTopBloc.state)
         .thenReturn(MovieTopRatedHasData(testMovieList));
 
     await tester.pumpWidget(MaterialApp(
@@ -455,7 +346,7 @@ void main() {
     }
 
     expect(find.byIcon(Icons.search), findsOneWidget);
-    expect(find.byKey(const Key('this_is_home_movie')), findsOneWidget);
+    expect(find.byKey(const Key('this_is_home_tv')), findsOneWidget);
 
     // on tap testing
     await tester.tap(find.byIcon(Icons.search));
@@ -464,6 +355,6 @@ void main() {
       await tester.pump(const Duration(seconds: 1));
     }
 
-    expect(find.byKey(const Key('this_is_home_movie')), findsNothing);
+    expect(find.byKey(const Key('this_is_home_tv')), findsNothing);
   });
 }
