@@ -20,21 +20,21 @@ void main() {
   const watchlistRemoveSuccessMessage = 'Removed from Watchlist';
 
   late MockGetWatchlistTVSeries getWatchlistTVSeries;
-  late MockGetWatchlistTVSeriesStatus getWatchlistTVSeriesStatus;
-  late MockSaveWatchlistTVSeries saveTVSeriesList;
-  late MockRemoveWatchlistTVSeries removeTVSerieslist;
+  late MockGetWatchlistTVSeriesStatus getWatchlistTVStatus;
+  late MockSaveWatchlistTVSeries saveTVWatchList;
+  late MockRemoveWatchlistTVSeries removeTVWatchlist;
   late TVSeriesWatchlistBloc watchlistBloc;
 
   setUp(() {
     getWatchlistTVSeries = MockGetWatchlistTVSeries();
-    getWatchlistTVSeriesStatus = MockGetWatchlistTVSeriesStatus();
-    saveTVSeriesList = MockSaveWatchlistTVSeries();
-    removeTVSerieslist = MockRemoveWatchlistTVSeries();
+    getWatchlistTVStatus = MockGetWatchlistTVSeriesStatus();
+    saveTVWatchList = MockSaveWatchlistTVSeries();
+    removeTVWatchlist = MockRemoveWatchlistTVSeries();
     watchlistBloc = TVSeriesWatchlistBloc(
       getWatchlistTVSeries,
-      getWatchlistTVSeriesStatus,
-      saveTVSeriesList,
-      removeTVSerieslist,
+      getWatchlistTVStatus,
+      saveTVWatchList,
+      removeTVWatchlist,
     );
   });
 
@@ -100,7 +100,7 @@ void main() {
       blocTest<TVSeriesWatchlistBloc, TVSeriesWatchlistState>(
         'should get true when the watchlist status is true',
         build: () {
-          when(getWatchlistTVSeries.execute(testTVSeriesDetail.id))
+          when(getWatchlistTVStatus.execute(testTVSeriesDetail.id))
               .thenAnswer((_) async => true);
           return watchlistBloc;
         },
@@ -110,7 +110,7 @@ void main() {
           TVSeriesIsAddedToWatchlist(true),
         ],
         verify: (bloc) {
-          verify(getWatchlistTVSeries.execute(testTVSeriesDetail.id));
+          verify(getWatchlistTVStatus.execute(testTVSeriesDetail.id));
           return FetchTVSeriesWatchlistStatus(testTVSeriesDetail.id).props;
         },
       );
@@ -118,7 +118,7 @@ void main() {
       blocTest<TVSeriesWatchlistBloc, TVSeriesWatchlistState>(
         'should get false when the watchlist status is false',
         build: () {
-          when(getWatchlistTVSeries.execute(testTVSeriesDetail.id))
+          when(getWatchlistTVStatus.execute(testTVSeriesDetail.id))
               .thenAnswer((_) async => false);
           return watchlistBloc;
         },
@@ -128,7 +128,7 @@ void main() {
           TVSeriesIsAddedToWatchlist(false),
         ],
         verify: (bloc) {
-          verify(getWatchlistTVSeries.execute(testTVSeriesDetail.id));
+          verify(getWatchlistTVStatus.execute(testTVSeriesDetail.id));
           return FetchTVSeriesWatchlistStatus(testTVSeriesDetail.id).props;
         },
       );
@@ -141,7 +141,7 @@ void main() {
       blocTest<TVSeriesWatchlistBloc, TVSeriesWatchlistState>(
         'should update watchlist status when add watchlist is success',
         build: () {
-          when(saveTVSeriesList.execute(testTVSeriesDetail))
+          when(saveTVWatchList.execute(testTVSeriesDetail))
               .thenAnswer((_) async => const Right(watchlistAddSuccessMessage));
           return watchlistBloc;
         },
@@ -150,7 +150,7 @@ void main() {
           TVSeriesWatchlistMessage(watchlistAddSuccessMessage),
         ],
         verify: (bloc) {
-          verify(saveTVSeriesList.execute(testTVSeriesDetail));
+          verify(saveTVWatchList.execute(testTVSeriesDetail));
           return AddTVSeriesToWatchlist(testTVSeriesDetail).props;
         },
       );
@@ -158,7 +158,7 @@ void main() {
       blocTest<TVSeriesWatchlistBloc, TVSeriesWatchlistState>(
         'should throw failure message status when add watchlist is unsuccessful',
         build: () {
-          when(saveTVSeriesList.execute(testTVSeriesDetail)).thenAnswer(
+          when(saveTVWatchList.execute(testTVSeriesDetail)).thenAnswer(
               (_) async =>
                   Left(DatabaseFailure('can\'t add data to watchlist')));
           return watchlistBloc;
@@ -168,7 +168,7 @@ void main() {
           TVSeriesWatchlistError('can\'t add data to watchlist'),
         ],
         verify: (bloc) {
-          verify(saveTVSeriesList.execute(testTVSeriesDetail));
+          verify(saveTVWatchList.execute(testTVSeriesDetail));
           return AddTVSeriesToWatchlist(testTVSeriesDetail).props;
         },
       );
@@ -176,7 +176,7 @@ void main() {
       blocTest<TVSeriesWatchlistBloc, TVSeriesWatchlistState>(
         'should update watchlist status when remove watchlist is success',
         build: () {
-          when(removeTVSerieslist.execute(testTVSeriesDetail)).thenAnswer(
+          when(removeTVWatchlist.execute(testTVSeriesDetail)).thenAnswer(
               (_) async => const Right(watchlistRemoveSuccessMessage));
           return watchlistBloc;
         },
@@ -186,7 +186,7 @@ void main() {
           TVSeriesWatchlistMessage(watchlistRemoveSuccessMessage),
         ],
         verify: (bloc) {
-          verify(removeTVSerieslist.execute(testTVSeriesDetail));
+          verify(removeTVWatchlist.execute(testTVSeriesDetail));
           return RemoveTVSeriesFromWatchlist(testTVSeriesDetail).props;
         },
       );
@@ -194,7 +194,7 @@ void main() {
       blocTest<TVSeriesWatchlistBloc, TVSeriesWatchlistState>(
         'should throw failure message status when remove watchlist is unsuccessful',
         build: () {
-          when(removeTVSerieslist.execute(testTVSeriesDetail)).thenAnswer(
+          when(removeTVWatchlist.execute(testTVSeriesDetail)).thenAnswer(
               (_) async =>
                   Left(DatabaseFailure('can\'t add data to watchlist')));
           return watchlistBloc;
@@ -205,7 +205,7 @@ void main() {
           TVSeriesWatchlistError('can\'t add data to watchlist'),
         ],
         verify: (bloc) {
-          verify(removeTVSerieslist.execute(testTVSeriesDetail));
+          verify(removeTVWatchlist.execute(testTVSeriesDetail));
           return RemoveTVSeriesFromWatchlist(testTVSeriesDetail).props;
         },
       );

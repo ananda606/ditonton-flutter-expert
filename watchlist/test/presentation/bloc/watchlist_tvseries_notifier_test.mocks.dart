@@ -45,12 +45,11 @@ class MockGetWatchlistTVSeries extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#repository),
           returnValue: _FakeTVSeriesRepository_0()) as _i2.TVSeriesRepository);
   @override
-  _i5.Future<_i3.Either<_i2.Failure, List<_i2.TVSeries>>> execute(int id) =>
-      (super
-              .noSuchMethod(Invocation.method(#execute, []),
-                  returnValue:
-                      Future<_i3.Either<_i2.Failure, List<_i2.TVSeries>>>.value(
-                          _FakeEither_1<_i2.Failure, List<_i2.TVSeries>>()))
+  _i5.Future<_i3.Either<_i2.Failure, List<_i2.TVSeries>>> execute() =>
+      (super.noSuchMethod(Invocation.method(#execute, []),
+              returnValue:
+                  Future<_i3.Either<_i2.Failure, List<_i2.TVSeries>>>.value(
+                      _FakeEither_1<_i2.Failure, List<_i2.TVSeries>>()))
           as _i5.Future<_i3.Either<_i2.Failure, List<_i2.TVSeries>>>);
 }
 
