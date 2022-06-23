@@ -44,7 +44,7 @@ class _OnAirTVSeriesPageState extends State<OnAirTVSeriesPage> {
             } else {
               return const Center(
                 key: Key('error_message'),
-                child: Text('eror'),
+                child: Text('error'),
               );
             }
           },
