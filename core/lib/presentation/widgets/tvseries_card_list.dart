@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 class TVSeriesCard extends StatelessWidget {
   final TVSeries tvSeries;
 
-  TVSeriesCard(this.tvSeries);
+  // ignore: use_key_in_widget_constructors
+  const TVSeriesCard(this.tvSeries);
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +56,7 @@ class TVSeriesCard extends StatelessWidget {
                 bottom: 16,
               ),
               child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
                 child: CachedNetworkImage(
                   imageUrl: '$BASE_IMAGE_URL${tvSeries.posterPath}',
                   width: 80,
@@ -63,7 +65,6 @@ class TVSeriesCard extends StatelessWidget {
                   ),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
               ),
             ),
           ],

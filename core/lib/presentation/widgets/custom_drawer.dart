@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 class DrawerApp extends StatelessWidget {
   final String pageRoute;
+  // ignore: use_key_in_widget_constructors
   const DrawerApp({required this.pageRoute});
   @override
   Widget build(BuildContext context) {

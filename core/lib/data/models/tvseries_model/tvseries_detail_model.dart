@@ -2,7 +2,7 @@ import 'package:core/core.dart';
 import 'package:equatable/equatable.dart';
 
 class TVSeriesDetailModel extends Equatable {
-  TVSeriesDetailModel({
+  const TVSeriesDetailModel({
     required this.name,
     required this.numberOfEpisodes,
     required this.numberOfSeasons,
@@ -80,22 +80,22 @@ class TVSeriesDetailModel extends Equatable {
 
   TVSeriesDetail toEntity() {
     return TVSeriesDetail(
-        adult: this.adult,
-        backdropPath: this.backdropPath,
-        episodeRuntime: this.episodeRuntime,
-        firstAirDate: this.firstAirDate,
-        genres: this.genres.map((genre) => genre.toEntity()).toList(),
-        id: this.id,
-        lastAirDate: this.lastAirDate,
-        name: this.name,
-        numberOfEpisodes: this.numberOfEpisodes,
-        numberOfSeasons: this.numberOfSeasons,
-        originalName: this.originalName,
-        overview: this.overview,
-        posterPath: this.posterPath,
-        seasons: this.seasons.map((season) => season.toEntity()).toList(),
-        voteAverage: this.voteAverage,
-        voteCount: this.voteCount);
+        adult: adult,
+        backdropPath: backdropPath,
+        episodeRuntime: episodeRuntime,
+        firstAirDate: firstAirDate,
+        genres: genres.map((genre) => genre.toEntity()).toList(),
+        id: id,
+        lastAirDate: lastAirDate,
+        name: name,
+        numberOfEpisodes: numberOfEpisodes,
+        numberOfSeasons: numberOfSeasons,
+        originalName: originalName,
+        overview: overview,
+        posterPath: posterPath,
+        seasons: seasons.map((season) => season.toEntity()).toList(),
+        voteAverage: voteAverage,
+        voteCount: voteCount);
   }
 
   @override
@@ -120,7 +120,7 @@ class TVSeriesDetailModel extends Equatable {
 }
 
 class SeasonModel extends Equatable {
-  SeasonModel({
+  const SeasonModel({
     required this.airDate,
     required this.episodeCount,
     required this.id,
@@ -160,13 +160,13 @@ class SeasonModel extends Equatable {
 
   Seasons toEntity() {
     return Seasons(
-      airDate: this.airDate,
-      episodeCount: this.episodeCount,
-      id: this.id,
-      name: this.name,
-      overview: this.overview,
-      posterPath: this.posterPath,
-      seasonNumber: this.seasonNumber,
+      airDate: airDate,
+      episodeCount: episodeCount,
+      id: id,
+      name: name,
+      overview: overview,
+      posterPath: posterPath,
+      seasonNumber: seasonNumber,
     );
   }
 

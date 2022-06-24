@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 class SeasonCard extends StatelessWidget {
   final Seasons seasons;
 
-  SeasonCard(this.seasons);
+  // ignore: use_key_in_widget_constructors
+  const SeasonCard(this.seasons);
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +55,7 @@ class SeasonCard extends StatelessWidget {
                 bottom: 16,
               ),
               child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
                 child: CachedNetworkImage(
                   imageUrl: '$BASE_IMAGE_URL${seasons.posterPath}',
                   width: 80,
@@ -62,7 +64,6 @@ class SeasonCard extends StatelessWidget {
                   ),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
               ),
             ),
           ],
