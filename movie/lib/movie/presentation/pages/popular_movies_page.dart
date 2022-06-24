@@ -4,9 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie/movie/presentation/bloc/movie_popular/movie_popular_bloc.dart';
 
 class PopularMoviesPage extends StatefulWidget {
+  // ignore: constant_identifier_names
   static const ROUTE_NAME = '/popular-movie';
 
+  const PopularMoviesPage({Key? key}) : super(key: key);
+
   @override
+  // ignore: library_private_types_in_public_api
   _PopularMoviesPageState createState() => _PopularMoviesPageState();
 }
 

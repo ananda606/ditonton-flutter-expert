@@ -4,7 +4,10 @@ import 'package:tvseries/tvseries.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OnAirTVSeriesPage extends StatefulWidget {
+  // ignore: constant_identifier_names
   static const ROUTE_NAME = '/onair_tv_series';
+
+  const OnAirTVSeriesPage({Key? key}) : super(key: key);
 
   @override
   State<OnAirTVSeriesPage> createState() => _OnAirTVSeriesPageState();

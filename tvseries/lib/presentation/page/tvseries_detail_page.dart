@@ -2,16 +2,19 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:tvseries/tvseries.dart';
 import 'package:watchlist/presentation/bloc/tvseries/tvseries_watchlist_bloc.dart';
 
 class TVSeriesDetailPage extends StatefulWidget {
+  // ignore: constant_identifier_names
   static const ROUTE_NAME = '/tv_series_detail';
 
   final int id;
 
-  TVSeriesDetailPage({required this.id});
+  // ignore: use_key_in_widget_constructors
+  const TVSeriesDetailPage({required this.id});
 
   @override
   State<TVSeriesDetailPage> createState() => _TVSeriesDetailPageState();
@@ -63,7 +66,8 @@ class DetailContent extends StatelessWidget {
   final TVSeriesDetail tv;
   final bool isAddedWatchlist;
 
-  DetailContent(this.tv, this.isAddedWatchlist);
+  // ignore: use_key_in_widget_constructors
+  const DetailContent(this.tv, this.isAddedWatchlist);
 
   @override
   Widget build(BuildContext context) {
@@ -227,7 +231,7 @@ class DetailContent extends StatelessWidget {
                                   return const Text('error');
                                 } else if (state
                                     is TVSeriesRecommendationHasData) {
-                                  return Container(
+                                  return SizedBox(
                                     height: 150,
                                     child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
@@ -311,7 +315,7 @@ class DetailContent extends StatelessWidget {
   String _showGenres(List<Genre> genres) {
     String result = '';
     for (var genre in genres) {
-      result += genre.name + ', ';
+      result += '${genre.name}, ';
     }
 
     if (result.isEmpty) {

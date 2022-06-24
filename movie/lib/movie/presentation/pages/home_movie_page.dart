@@ -6,8 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:search/search.dart';
 
 class HomeMoviePage extends StatefulWidget {
+  // ignore: constant_identifier_names
   static const ROUTE_NAME = '/home_movie';
+
+  const HomeMoviePage({Key? key}) : super(key: key);
   @override
+  // ignore: library_private_types_in_public_api
   _HomeMoviePageState createState() => _HomeMoviePageState();
 }
 
@@ -113,10 +117,7 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
-              children: [
-                const Text('See More'),
-                const Icon(Icons.arrow_forward_ios)
-              ],
+              children: const [Text('See More'), Icon(Icons.arrow_forward_ios)],
             ),
           ),
         ),
@@ -128,11 +129,12 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
 class MovieList extends StatelessWidget {
   final List<Movie> movies;
 
-  MovieList(this.movies);
+  // ignore: use_key_in_widget_constructors
+  const MovieList(this.movies);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 200,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,

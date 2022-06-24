@@ -2,7 +2,7 @@ import 'package:core/core.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  final tTvModel = TVSeriesModel(
+  const tTvModel = TVSeriesModel(
     backdropPath: '/path.jpg',
     firstAirDate: 'firstAirDate',
     genreIds: [1, 2, 3],
@@ -19,7 +19,7 @@ void main() {
   final tTv = TVSeries(
     backdropPath: '/path.jpg',
     firstAirDate: 'firstAirDate',
-    genreIds: [1, 2, 3],
+    genreIds: const [1, 2, 3],
     id: 1,
     name: 'name',
     originalName: 'originalName',

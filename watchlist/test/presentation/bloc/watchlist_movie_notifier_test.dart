@@ -66,8 +66,8 @@ void main() {
       blocTest<MovieWatchlistBloc, MovieWatchlistState>(
         'should emit [Loading, Error] when watchlist data is unsuccessful',
         build: () {
-          when(getWatchlistMovies.execute())
-              .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
+          when(getWatchlistMovies.execute()).thenAnswer(
+              (_) async => const Left(ServerFailure('Server Failure')));
           return watchlistBloc;
         },
         act: (bloc) => bloc.add(OnFetchMovieWatchlist()),
@@ -157,7 +157,7 @@ void main() {
         'should throw failure message status when add watchlist is unsuccessful',
         build: () {
           when(saveWatchlist.execute(testMovieDetail)).thenAnswer((_) async =>
-              Left(DatabaseFailure('can\'t add data to watchlist')));
+              const Left(DatabaseFailure('can\'t add data to watchlist')));
           return watchlistBloc;
         },
         act: (bloc) => bloc.add(AddMovieToWatchlist(testMovieDetail)),
@@ -191,7 +191,7 @@ void main() {
         'should throw failure message status when remove watchlist is unsuccessful',
         build: () {
           when(removeWatchlist.execute(testMovieDetail)).thenAnswer((_) async =>
-              Left(DatabaseFailure('can\'t add data to watchlist')));
+              const Left(DatabaseFailure('can\'t add data to watchlist')));
           return watchlistBloc;
         },
         act: (bloc) => bloc.add(RemoveMovieFromWatchlist(testMovieDetail)),

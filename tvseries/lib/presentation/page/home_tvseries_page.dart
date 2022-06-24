@@ -6,7 +6,10 @@ import 'package:tvseries/tvseries.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeTVSeriesPage extends StatefulWidget {
+  // ignore: constant_identifier_names
   static const ROUTE_NAME = '/home_tv_series';
+
+  const HomeTVSeriesPage({Key? key}) : super(key: key);
 
   @override
   State<HomeTVSeriesPage> createState() => _HomeTVSeriesPageState();
@@ -116,6 +119,7 @@ Row _buildSubHeading({required String title, required Function() onTap}) {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
+            // ignore: prefer_const_literals_to_create_immutables
             children: [
               const Text('See More'),
               const Icon(Icons.arrow_forward_ios)
@@ -130,11 +134,12 @@ Row _buildSubHeading({required String title, required Function() onTap}) {
 class TVSeriesList extends StatelessWidget {
   final List<TVSeries> tvseries;
 
-  TVSeriesList(this.tvseries);
+  // ignore: use_key_in_widget_constructors
+  const TVSeriesList(this.tvseries);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 200,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,

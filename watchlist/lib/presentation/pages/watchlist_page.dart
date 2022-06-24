@@ -3,6 +3,7 @@ import 'package:watchlist/watchlist.dart';
 import 'package:flutter/material.dart';
 
 class WatchlistPage extends StatelessWidget {
+  // ignore: constant_identifier_names
   static const ROUTE_NAME = '/watchlist_page';
 
   const WatchlistPage({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class WatchlistPage extends StatelessWidget {
           body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBox) {
           return <Widget>[
-            new SliverAppBar(
+            SliverAppBar(
               title: const Text('Watchlist'),
               bottom: TabBar(
                 indicatorColor: kPrussianBlue,
@@ -27,7 +28,8 @@ class WatchlistPage extends StatelessWidget {
             ),
           ];
         },
-        body: TabBarView(
+        body: const TabBarView(
+          // ignore: prefer_const_literals_to_create_immutables
           children: <Widget>[
             WatchlistTVSeriesPage(),
             WatchlistMoviesPage(),

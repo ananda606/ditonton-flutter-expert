@@ -4,7 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:search/search.dart';
 
 class SearchPageTVSeries extends StatelessWidget {
+  // ignore: constant_identifier_names
   static const ROUTE_NAME = '/search_tvseries';
+
+  const SearchPageTVSeries({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

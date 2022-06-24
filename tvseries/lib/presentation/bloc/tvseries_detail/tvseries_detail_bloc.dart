@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:core/domain/entities/tvseries/tvseries_detail.dart';
 import 'package:equatable/equatable.dart';
+// ignore: depend_on_referenced_packages
 import 'package:meta/meta.dart';
 import 'package:tvseries/tvseries.dart';
 

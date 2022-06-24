@@ -66,8 +66,8 @@ void main() {
       blocTest<TVSeriesWatchlistBloc, TVSeriesWatchlistState>(
         'should emit [Loading, Error] when watchlist data is unsuccessful',
         build: () {
-          when(getWatchlistTVSeries.execute())
-              .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
+          when(getWatchlistTVSeries.execute()).thenAnswer(
+              (_) async => const Left(ServerFailure('Server Failure')));
           return watchlistBloc;
         },
         act: (bloc) => bloc.add(OnFetchTVSeriesWatchlist()),
@@ -160,7 +160,7 @@ void main() {
         build: () {
           when(saveTVWatchList.execute(testTVSeriesDetail)).thenAnswer(
               (_) async =>
-                  Left(DatabaseFailure('can\'t add data to watchlist')));
+                  const Left(DatabaseFailure('can\'t add data to watchlist')));
           return watchlistBloc;
         },
         act: (bloc) => bloc.add(AddTVSeriesToWatchlist(testTVSeriesDetail)),
@@ -196,7 +196,7 @@ void main() {
         build: () {
           when(removeTVWatchlist.execute(testTVSeriesDetail)).thenAnswer(
               (_) async =>
-                  Left(DatabaseFailure('can\'t add data to watchlist')));
+                  const Left(DatabaseFailure('can\'t add data to watchlist')));
           return watchlistBloc;
         },
         act: (bloc) =>

@@ -4,7 +4,6 @@ import 'package:tvseries/tvseries.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
 
 import '../../dummy_data/dummy_objects.dart';
@@ -49,7 +48,7 @@ void main() {
     'should emit [Loading, Error] when get data is unsuccessful',
     build: () {
       when(usecase.execute())
-          .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
+          .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       return tvBloc;
     },
     act: (bloc) => bloc.add(OnTVSeriesListCalled()),

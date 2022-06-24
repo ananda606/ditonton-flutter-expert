@@ -32,7 +32,7 @@ void main() {
     'should emit [Loading, HasData] when data is gotten successfully',
     build: () {
       when(usecase.execute(tId))
-          .thenAnswer((_) async => Right(testMovieDetail));
+          .thenAnswer((_) async => const Right(testMovieDetail));
       return movieBloc;
     },
     act: (bloc) => bloc.add(OnMovieDetailCalled(tId)),
@@ -50,7 +50,7 @@ void main() {
     'should emit [Loading, Error] when get data is unsuccessful',
     build: () {
       when(usecase.execute(tId))
-          .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
+          .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       return movieBloc;
     },
     act: (bloc) => bloc.add(OnMovieDetailCalled(tId)),

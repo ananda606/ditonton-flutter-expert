@@ -7,12 +7,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:watchlist/watchlist.dart';
 
 class MovieDetailPage extends StatefulWidget {
+  // ignore: constant_identifier_names
   static const ROUTE_NAME = '/detail';
 
   final int id;
-  MovieDetailPage({required this.id});
+  // ignore: use_key_in_widget_constructors
+  const MovieDetailPage({required this.id});
 
   @override
+  // ignore: library_private_types_in_public_api
   _MovieDetailPageState createState() => _MovieDetailPageState();
 }
 
@@ -63,7 +66,8 @@ class DetailContent extends StatelessWidget {
   final MovieDetail movie;
   final bool isAddedWatchlist;
 
-  DetailContent(this.movie, this.isAddedWatchlist);
+  // ignore: use_key_in_widget_constructors
+  const DetailContent(this.movie, this.isAddedWatchlist);
 
   @override
   Widget build(BuildContext context) {
@@ -202,7 +206,7 @@ class DetailContent extends StatelessWidget {
                                   return Text(state.message);
                                 } else if (state
                                     is MovieRecommendationHasData) {
-                                  return Container(
+                                  return SizedBox(
                                     height: 150,
                                     child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
@@ -288,7 +292,7 @@ class DetailContent extends StatelessWidget {
   String _showGenres(List<Genre> genres) {
     String result = '';
     for (var genre in genres) {
-      result += genre.name + ', ';
+      result += '${genre.name}, ';
     }
 
     if (result.isEmpty) {

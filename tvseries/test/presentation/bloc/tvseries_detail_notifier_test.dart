@@ -4,8 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:tvseries/tvseries.dart';
-import 'package:watchlist/watchlist.dart';
-import '../../dummy_data/dummy_objects.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'tvseries_detail_notifier_test.mocks.dart';
 
@@ -32,7 +30,7 @@ void main() {
     'should emit Loading state and then Error state when data failed to fetch',
     build: () {
       when(usecase.execute(tId))
-          .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
+          .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       return tvBloc;
     },
     act: (bloc) => bloc.add(OnTVSeriesDetailCalled(tId)),

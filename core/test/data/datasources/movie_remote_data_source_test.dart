@@ -11,6 +11,7 @@ import '../../helpers/test_helper.mocks.dart';
 void main() {
   // ignore: constant_identifier_names
   const API_KEY = 'api_key=2174d146bb9c0eab47529b2e77d6b526';
+  // ignore: constant_identifier_names
   const BASE_URL = 'https://api.themoviedb.org/3';
 
   late MovieRemoteDataSourceImpl dataSource;

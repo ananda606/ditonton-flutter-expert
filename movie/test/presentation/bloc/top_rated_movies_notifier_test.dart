@@ -44,7 +44,7 @@ void main() {
     'should emit [Loading, Error] when get data is unsuccessful',
     build: () {
       when(usecase.execute())
-          .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
+          .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       return movieBloc;
     },
     act: (bloc) => bloc.add(OnMovieTopRatedCalled()),

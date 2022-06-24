@@ -5,9 +5,13 @@ import 'package:watchlist/presentation/bloc/movie/movie_watchlist_bloc.dart';
 import 'package:watchlist/presentation/bloc/tvseries/tvseries_watchlist_bloc.dart';
 
 class WatchlistMoviesPage extends StatefulWidget {
+  // ignore: constant_identifier_names
   static const ROUTE_NAME = '/watchlist-movie';
 
+  const WatchlistMoviesPage({Key? key}) : super(key: key);
+
   @override
+  // ignore: library_private_types_in_public_api
   _WatchlistMoviesPageState createState() => _WatchlistMoviesPageState();
 }
 
@@ -28,6 +32,7 @@ class _WatchlistMoviesPageState extends State<WatchlistMoviesPage>
     routeObserver.subscribe(this, ModalRoute.of(context)!);
   }
 
+  @override
   void didPopNext() {
     context.read<MovieWatchlistBloc>().add(OnFetchMovieWatchlist());
   }

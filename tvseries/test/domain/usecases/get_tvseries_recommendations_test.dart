@@ -15,7 +15,7 @@ void main() {
     usecase = GetTVSeriesRecommendations(mockTVSeriesRepository);
   });
 
-  final tId = 1;
+  const tId = 1;
   final tTVSeries = <TVSeries>[];
 
   test('should get list of tvseries recommendations from the repository',

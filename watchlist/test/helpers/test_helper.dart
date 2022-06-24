@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
 import 'package:watchlist/watchlist.dart';
 import 'package:mockito/annotations.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
 @GenerateMocks([

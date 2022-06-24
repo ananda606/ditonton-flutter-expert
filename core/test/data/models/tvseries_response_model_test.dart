@@ -6,9 +6,10 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../json_reader.dart';
 
 void main() {
-  final tTvModel = TVSeriesModel(
+  const tTvModel = TVSeriesModel(
     backdropPath: '/path.jpg',
     firstAirDate: 'firstAirDate',
+    // ignore: prefer_const_literals_to_create_immutables
     genreIds: [1, 2, 3],
     id: 1,
     name: 'name',
@@ -20,7 +21,8 @@ void main() {
     voteCount: 1,
   );
 
-  final tTvResponseModel =
+  const tTvResponseModel =
+      // ignore: prefer_const_literals_to_create_immutables
       TVSeriesResponse(tvSeriesList: <TVSeriesModel>[tTvModel]);
 
   group('fromJson', () {

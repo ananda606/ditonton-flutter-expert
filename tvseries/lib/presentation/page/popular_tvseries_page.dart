@@ -4,7 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tvseries/presentation/bloc/tvseries_popular/tvseries_popular_bloc.dart';
 
 class PopularTVSeriesPage extends StatefulWidget {
+  // ignore: constant_identifier_names
   static const ROUTE_NAME = '/popular_tv_series';
+
+  const PopularTVSeriesPage({Key? key}) : super(key: key);
 
   @override
   State<PopularTVSeriesPage> createState() => _PopularTVSeriesPageState();

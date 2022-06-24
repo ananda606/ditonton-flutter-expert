@@ -9,7 +9,9 @@ import '../../helpers/test_helper.mocks.dart';
 import '../../json_reader.dart';
 
 void main() {
+  // ignore: constant_identifier_names
   const API_KEY = 'api_key=2174d146bb9c0eab47529b2e77d6b526';
+  // ignore: constant_identifier_names
   const BASE_URL = 'https://api.themoviedb.org/3';
   late TVSeriesRemoteDataSourceImpl dataSource;
   late MockHttpClient mockHttpClient;
@@ -108,7 +110,7 @@ void main() {
   });
 
   group('get TVSeries detail', () {
-    final tId = 1;
+    const tId = 1;
     final tTvDetail = TVSeriesDetailModel.fromJson(
         json.decode(readJson('dummy_data/tvseries_detail.json')));
 
@@ -139,7 +141,7 @@ void main() {
     final tTvList = TVSeriesResponse.fromJson(
             json.decode(readJson('dummy_data/tvseries_recommendations.json')))
         .tvSeriesList;
-    final tId = 1;
+    const tId = 1;
 
     test('should return list of TVSeries Model when the response code is 200',
         () async {
@@ -171,7 +173,7 @@ void main() {
     final tSearchResult = TVSeriesResponse.fromJson(
             json.decode(readJson('dummy_data/search_arcane_tvseries.json')))
         .tvSeriesList;
-    final tQuery = 'Arcane';
+    const tQuery = 'Arcane';
 
     test('should return list of TVSeries when response code is 200', () async {
       // arrange
