@@ -40,7 +40,6 @@ workflows:
       - flutter test movie/test
       - flutter test tvseries/test
       - flutter test watchlist/test
-      - flutter test core/test
       - flutter build appbundle --release
       - find . -name "Podfile" -execdir pod install \;
       - flutter build ios --release --no-codesign
