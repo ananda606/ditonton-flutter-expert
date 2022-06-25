@@ -22,11 +22,9 @@ class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
     OnMovieDetailCalled event,
     Emitter<MovieDetailState> emit,
   ) async {
-    final id = event.id;
-
     emit(MovieDetailLoading());
 
-    final result = await _getMovieDetail.execute(id);
+    final result = await _getMovieDetail.execute(event.id);
 
     result.fold(
       (failure) {

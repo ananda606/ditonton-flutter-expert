@@ -9,7 +9,21 @@ import 'package:get_it/get_it.dart';
 final locator = GetIt.instance;
 
 void init() {
-  // provider
+  //tvseries bloc
+  locator.registerFactory(() => TVSeriesListBloc(locator()));
+  locator.registerFactory(() => TVSeriesDetailBloc(locator()));
+  locator.registerFactory(() => TVSeriesPopularBloc(locator()));
+  locator.registerFactory(() => TVSeriesRecommendationBloc(locator()));
+  locator.registerFactory(() => TVSeriesTopRatedBloc(locator()));
+
+  //moviebloc
+  locator.registerFactory(() => MovieListBloc(locator()));
+  locator.registerFactory(() => MoviePopularBloc(locator()));
+  locator.registerFactory(() => MovieRecommendationBloc(locator()));
+  locator.registerFactory(() => MovieTopRatedBloc(locator()));
+  locator.registerFactory(() => MovieDetailBloc(locator()));
+
+  // search bloc
   locator.registerFactory(() => SearchMoviesBloc(locator()));
   locator.registerFactory(() => SearchTVSeriesBloc(locator()));
 
@@ -30,19 +44,6 @@ void init() {
       locator(),
     ),
   );
-  //tv bloc
-  locator.registerFactory(() => TVSeriesListBloc(locator()));
-  locator.registerFactory(() => TVSeriesDetailBloc(locator()));
-  locator.registerFactory(() => TVSeriesPopularBloc(locator()));
-  locator.registerFactory(() => TVSeriesRecommendationBloc(locator()));
-  locator.registerFactory(() => TVSeriesTopRatedBloc(locator()));
-
-  //moviebloc
-  locator.registerFactory(() => MovieListBloc(locator()));
-  locator.registerFactory(() => MoviePopularBloc(locator()));
-  locator.registerFactory(() => MovieRecommendationBloc(locator()));
-  locator.registerFactory(() => MovieTopRatedBloc(locator()));
-  locator.registerFactory(() => MovieDetailBloc(locator()));
 
   // use case
   //movies
@@ -99,5 +100,5 @@ void init() {
 
   // external
   locator.registerLazySingleton(() => http.Client());
-  locator.registerLazySingleton<ApiIOClient>(() => ApiIOClient());
+  locator.registerLazySingleton<SSLPinningClient>(() => SSLPinningClient());
 }

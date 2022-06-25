@@ -493,10 +493,10 @@ class MockHttpClient extends _i1.Mock implements _i4.Client {
       returnValueForMissingStub: null);
 }
 
-/// A class which mocks [ApiIOClient].
+/// A class which mocks [SSLPinningClient].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockApiIOClient extends _i1.Mock implements _i3.ApiIOClient {
+class MockApiIOClient extends _i1.Mock implements _i3.SSLPinningClient {
   MockApiIOClient() {
     _i1.throwOnMissingStub(this);
   }

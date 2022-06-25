@@ -23,6 +23,6 @@ import 'package:http/http.dart' as http;
   SaveWatchlistTVSeries,
 ], customMocks: [
   MockSpec<http.Client>(as: #MockHttpClient),
-  MockSpec<ApiIOClient>(as: #MockApiIOClient),
+  MockSpec<SSLPinningClient>(as: #MockSSLPinning),
 ])
 void main() {}
