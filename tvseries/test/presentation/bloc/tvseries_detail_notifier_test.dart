@@ -12,32 +12,32 @@ import 'tvseries_detail_notifier_test.mocks.dart';
   GetTVSeriesRecommendations,
 ])
 void main() {
-  late MockGetTVSeriesDetail usecase;
-  late TVSeriesDetailBloc tvBloc;
+  late MockGetTVSeriesDetail mockGetTVSeriesDetail;
+  late TVSeriesDetailBloc tvSeriesBloc;
 
   const tId = 1;
 
   setUp(() {
-    usecase = MockGetTVSeriesDetail();
-    tvBloc = TVSeriesDetailBloc(usecase);
+    mockGetTVSeriesDetail = MockGetTVSeriesDetail();
+    tvSeriesBloc = TVSeriesDetailBloc(mockGetTVSeriesDetail);
   });
 
   test('initial state should be empty', () {
-    expect(tvBloc.state, TVSeriesDetailEmpty());
+    expect(tvSeriesBloc.state, TVSeriesDetailEmpty());
   });
 
   blocTest<TVSeriesDetailBloc, TVSeriesDetailState>(
     'should emit Loading state and then Error state when data failed to fetch',
     build: () {
-      when(usecase.execute(tId))
+      when(mockGetTVSeriesDetail.execute(tId))
           .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
-      return tvBloc;
+      return tvSeriesBloc;
     },
-    act: (bloc) => bloc.add(OnTVSeriesDetailCalled(tId)),
+    act: (blocAct) => blocAct.add(OnTVSeriesDetailCalled(tId)),
     expect: () => [
       TVSeriesDetailLoading(),
       TVSeriesDetailError('Server Failure'),
     ],
-    verify: (bloc) => TVSeriesDetailLoading(),
+    verify: (blocAct) => TVSeriesDetailLoading(),
   );
 }

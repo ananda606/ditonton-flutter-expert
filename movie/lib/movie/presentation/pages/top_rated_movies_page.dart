@@ -20,7 +20,7 @@ class _TopRatedMoviesPageState extends State<TopRatedMoviesPage> {
     super.initState();
     Future.microtask(() =>
         BlocProvider.of<MovieTopRatedBloc>(context, listen: false)
-            .add(OnMovieTopRatedCalled()));
+            .add(MovieTopRatedCalled()));
   }
 
   @override

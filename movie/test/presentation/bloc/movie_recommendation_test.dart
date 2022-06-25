@@ -13,14 +13,14 @@ import 'movie_recommendation_test.mocks.dart';
   GetMovieRecommendations,
 ])
 void main() {
-  late MockGetMovieRecommendations usecase;
+  late MockGetMovieRecommendations mockGetMovieRecommend;
   late MovieRecommendationBloc movieBloc;
 
   const tId = 1;
 
   setUp(() {
-    usecase = MockGetMovieRecommendations();
-    movieBloc = MovieRecommendationBloc(usecase);
+    mockGetMovieRecommend = MockGetMovieRecommendations();
+    movieBloc = MovieRecommendationBloc(mockGetMovieRecommend);
   });
 
   test('initial state should be empty', () {
@@ -28,44 +28,46 @@ void main() {
   });
 
   blocTest<MovieRecommendationBloc, MovieRecommendationState>(
-    'should emit [Loading, HasData] when data is gotten successfully',
+    'emit loading and hasdata when data is success',
     build: () {
-      when(usecase.execute(tId)).thenAnswer((_) async => Right(testMovieList));
+      when(mockGetMovieRecommend.execute(tId))
+          .thenAnswer((_) async => Right(testMovieList));
       return movieBloc;
     },
-    act: (bloc) => bloc.add(OnMovieRecommendationCalled(tId)),
+    act: (blocAct) => blocAct.add(MovieRecommendationCalled(tId)),
     expect: () => [
       MovieRecommendationLoading(),
       MovieRecommendationHasData(testMovieList),
     ],
-    verify: (bloc) {
-      verify(usecase.execute(tId));
-      return OnMovieRecommendationCalled(tId).props;
+    verify: (blocAct) {
+      verify(mockGetMovieRecommend.execute(tId));
+      return MovieRecommendationCalled(tId).props;
     },
   );
 
   blocTest<MovieRecommendationBloc, MovieRecommendationState>(
-    'should emit [Loading, Error] when get data is unsuccessful',
+    'emit loading and error when data is unsuccessful',
     build: () {
-      when(usecase.execute(tId))
+      when(mockGetMovieRecommend.execute(tId))
           .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       return movieBloc;
     },
-    act: (bloc) => bloc.add(OnMovieRecommendationCalled(tId)),
+    act: (blocAct) => blocAct.add(MovieRecommendationCalled(tId)),
     expect: () => [
       MovieRecommendationLoading(),
       MovieRecommendationError('Server Failure'),
     ],
-    verify: (bloc) => MovieRecommendationLoading(),
+    verify: (blocAct) => MovieRecommendationLoading(),
   );
 
   blocTest<MovieRecommendationBloc, MovieRecommendationState>(
-    'should emit [Loading, Empty] when get data is empty',
+    'emit loading and empty when data is empty',
     build: () {
-      when(usecase.execute(tId)).thenAnswer((_) async => const Right([]));
+      when(mockGetMovieRecommend.execute(tId))
+          .thenAnswer((_) async => const Right([]));
       return movieBloc;
     },
-    act: (bloc) => bloc.add(OnMovieRecommendationCalled(tId)),
+    act: (blocAct) => blocAct.add(MovieRecommendationCalled(tId)),
     expect: () => [
       MovieRecommendationLoading(),
       MovieRecommendationEmpty(),

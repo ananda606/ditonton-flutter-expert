@@ -3,26 +3,26 @@ import 'package:movie/movie.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../dummy_data/dummy_objects.dart';
-import '../../helpers/test_helper.mocks.dart';
+import '../dummy_data/dummy_objects.dart';
+import '../helpers/test_helper.mocks.dart';
 
 void main() {
-  late GetMovieDetail usecase;
+  late GetMovieDetail getDetailMovie;
   late MockMovieRepository mockMovieRepository;
 
   setUp(() {
     mockMovieRepository = MockMovieRepository();
-    usecase = GetMovieDetail(mockMovieRepository);
+    getDetailMovie = GetMovieDetail(mockMovieRepository);
   });
 
-  const tId = 1;
+  const testId = 1;
 
   test('should get movie detail from the repository', () async {
     // arrange
-    when(mockMovieRepository.getMovieDetail(tId))
+    when(mockMovieRepository.getMovieDetail(testId))
         .thenAnswer((_) async => const Right(testMovieDetail));
     // act
-    final result = await usecase.execute(tId);
+    final result = await getDetailMovie.execute(testId);
     // assert
     expect(result, const Right(testMovieDetail));
   });

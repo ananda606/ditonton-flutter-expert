@@ -7,20 +7,18 @@ import 'package:equatable/equatable.dart';
 // ignore: depend_on_referenced_packages
 import 'package:meta/meta.dart';
 import 'package:movie/movie.dart';
-
 part 'movie_list_event.dart';
 part 'movie_list_state.dart';
 
 class MovieListBloc extends Bloc<MovieListEvent, MovieListState> {
   final GetNowPlayingMovies _getNowPlayingMovies;
-
   MovieListBloc(
     this._getNowPlayingMovies,
   ) : super(MovieListEmpty()) {
-    on<OnMovieListCalled>(_onMovieListCalled);
+    on<MovieListCalled>(_MovieListCalled);
   }
 
-  FutureOr<void> _onMovieListCalled(
+  FutureOr<void> _MovieListCalled(
       MovieListEvent event, Emitter<MovieListState> emit) async {
     emit(MovieListLoading());
 

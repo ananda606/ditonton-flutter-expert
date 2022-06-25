@@ -11,43 +11,44 @@ import 'movie_list_notifier_test.mocks.dart';
 
 @GenerateMocks([GetNowPlayingMovies, GetPopularMovies, GetTopRatedMovies])
 void main() {
-  late MockGetNowPlayingMovies usecase;
+  late MockGetNowPlayingMovies mockGetNowPlayingMovie;
   late MovieListBloc movieBloc;
 
   setUp(() {
-    usecase = MockGetNowPlayingMovies();
-    movieBloc = MovieListBloc(usecase);
+    mockGetNowPlayingMovie = MockGetNowPlayingMovies();
+    movieBloc = MovieListBloc(mockGetNowPlayingMovie);
   });
 
-  test('initial state should be empty', () {
+  test('initial state  empty', () {
     expect(movieBloc.state, MovieListEmpty());
   });
 
   blocTest<MovieListBloc, MovieListState>(
-    'should emit [Loading, HasData] when data is gotten successfully',
+    'when data success emit loading and hasdata state',
     build: () {
-      when(usecase.execute()).thenAnswer((_) async => Right(testMovieList));
+      when(mockGetNowPlayingMovie.execute())
+          .thenAnswer((_) async => Right(testMovieList));
       return movieBloc;
     },
-    act: (bloc) => bloc.add(OnMovieListCalled()),
+    act: (bloc) => bloc.add(MovieListCalled()),
     expect: () => [
       MovieListLoading(),
       MovieListHasData(testMovieList),
     ],
     verify: (bloc) {
-      verify(usecase.execute());
-      return OnMovieListCalled().props;
+      verify(mockGetNowPlayingMovie.execute());
+      return MovieListCalled().props;
     },
   );
 
   blocTest<MovieListBloc, MovieListState>(
-    'should emit [Loading, Error] when get data is unsuccessful',
+    'when data unsuccess emit loading and error state',
     build: () {
-      when(usecase.execute())
+      when(mockGetNowPlayingMovie.execute())
           .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       return movieBloc;
     },
-    act: (bloc) => bloc.add(OnMovieListCalled()),
+    act: (bloc) => bloc.add(MovieListCalled()),
     expect: () => [
       MovieListLoading(),
       MovieListError('Server Failure'),
@@ -56,12 +57,13 @@ void main() {
   );
 
   blocTest<MovieListBloc, MovieListState>(
-    'should emit [Loading, Empty] when get data is empty',
+    'emit empty when data is empty',
     build: () {
-      when(usecase.execute()).thenAnswer((_) async => const Right([]));
+      when(mockGetNowPlayingMovie.execute())
+          .thenAnswer((_) async => const Right([]));
       return movieBloc;
     },
-    act: (bloc) => bloc.add(OnMovieListCalled()),
+    act: (blocAct) => blocAct.add(MovieListCalled()),
     expect: () => [
       MovieListLoading(),
       MovieListEmpty(),

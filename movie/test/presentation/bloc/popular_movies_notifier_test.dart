@@ -11,12 +11,12 @@ import 'popular_movies_notifier_test.mocks.dart';
 
 @GenerateMocks([GetPopularMovies])
 void main() {
-  late MockGetPopularMovies usecase;
+  late MockGetPopularMovies mockGetPopularMovies;
   late MoviePopularBloc movieBloc;
 
   setUp(() {
-    usecase = MockGetPopularMovies();
-    movieBloc = MoviePopularBloc(usecase);
+    mockGetPopularMovies = MockGetPopularMovies();
+    movieBloc = MoviePopularBloc(mockGetPopularMovies);
   });
 
   test('initial state should be empty', () {
@@ -24,44 +24,46 @@ void main() {
   });
 
   blocTest<MoviePopularBloc, MoviePopularState>(
-    'should emit [Loading, HasData] when data is gotten successfully',
+    'emit loading and hasdata when data is success',
     build: () {
-      when(usecase.execute()).thenAnswer((_) async => Right(testMovieList));
+      when(mockGetPopularMovies.execute())
+          .thenAnswer((_) async => Right(testMovieList));
       return movieBloc;
     },
-    act: (bloc) => bloc.add(OnMoviePopularCalled()),
+    act: (blocAct) => blocAct.add(MoviePopularCalled()),
     expect: () => [
       MoviePopularLoading(),
       MoviePopularHasData(testMovieList),
     ],
-    verify: (bloc) {
-      verify(usecase.execute());
-      return OnMoviePopularCalled().props;
+    verify: (blocAct) {
+      verify(mockGetPopularMovies.execute());
+      return MoviePopularCalled().props;
     },
   );
 
   blocTest<MoviePopularBloc, MoviePopularState>(
-    'should emit [Loading, Error] when get data is unsuccessful',
+    'emit loading and error when get data unsuccess',
     build: () {
-      when(usecase.execute())
+      when(mockGetPopularMovies.execute())
           .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       return movieBloc;
     },
-    act: (bloc) => bloc.add(OnMoviePopularCalled()),
+    act: (blocAct) => blocAct.add(MoviePopularCalled()),
     expect: () => [
       MoviePopularLoading(),
       MoviePopularError('Server Failure'),
     ],
-    verify: (bloc) => MoviePopularLoading(),
+    verify: (blocAct) => MoviePopularLoading(),
   );
 
   blocTest<MoviePopularBloc, MoviePopularState>(
-    'should emit [Loading, Empty] when get data is empty',
+    'emit loading and empty when data is empty',
     build: () {
-      when(usecase.execute()).thenAnswer((_) async => const Right([]));
+      when(mockGetPopularMovies.execute())
+          .thenAnswer((_) async => const Right([]));
       return movieBloc;
     },
-    act: (bloc) => bloc.add(OnMoviePopularCalled()),
+    act: (blocAct) => blocAct.add(MoviePopularCalled()),
     expect: () => [
       MoviePopularLoading(),
       MoviePopularEmpty(),

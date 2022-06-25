@@ -15,11 +15,11 @@ class MovieTopRatedBloc extends Bloc<MovieTopRatedEvent, MovieTopRatedState> {
   final GetTopRatedMovies _getTopRatedMovies;
 
   MovieTopRatedBloc(this._getTopRatedMovies) : super(MovieTopRatedEmpty()) {
-    on<OnMovieTopRatedCalled>(_onMovieTopRatedCalled);
+    on<MovieTopRatedCalled>(_MovieTopRatedCalled);
   }
 
-  FutureOr<void> _onMovieTopRatedCalled(
-    OnMovieTopRatedCalled event,
+  FutureOr<void> _MovieTopRatedCalled(
+    MovieTopRatedCalled event,
     Emitter<MovieTopRatedState> emit,
   ) async {
     emit(MovieTopRatedLoading());

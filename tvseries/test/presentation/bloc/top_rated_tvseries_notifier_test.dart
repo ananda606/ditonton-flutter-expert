@@ -11,57 +11,59 @@ import 'top_rated_tvseries_notifier_test.mocks.dart';
 
 @GenerateMocks([GetTopRatedTVSeries])
 void main() {
-  late MockGetTopRatedTVSeries usecase;
-  late TVSeriesTopRatedBloc tvBloc;
+  late MockGetTopRatedTVSeries mockGetTopRatedTVSeries;
+  late TVSeriesTopRatedBloc tvSeriesBloc;
 
   setUp(() {
-    usecase = MockGetTopRatedTVSeries();
-    tvBloc = TVSeriesTopRatedBloc(usecase);
+    mockGetTopRatedTVSeries = MockGetTopRatedTVSeries();
+    tvSeriesBloc = TVSeriesTopRatedBloc(mockGetTopRatedTVSeries);
   });
 
   test('initial state should be empty', () {
-    expect(tvBloc.state, TVSeriesTopRatedEmpty());
+    expect(tvSeriesBloc.state, TVSeriesTopRatedEmpty());
   });
 
   blocTest<TVSeriesTopRatedBloc, TVSeriesTopRatedState>(
-    'should emit [Loading, HasData] when data is gotten successfully',
+    'emit loading and has data when data is success',
     build: () {
-      when(usecase.execute()).thenAnswer((_) async => Right(testTVSeriesList));
-      return tvBloc;
+      when(mockGetTopRatedTVSeries.execute())
+          .thenAnswer((_) async => Right(testTVSeriesList));
+      return tvSeriesBloc;
     },
-    act: (bloc) => bloc.add(OnTVSeriesTopRatedCalled()),
+    act: (blocAct) => blocAct.add(OnTVSeriesTopRatedCalled()),
     expect: () => [
       TVSeriesTopRatedLoading(),
       TVSeriesTopRatedHasData(testTVSeriesList),
     ],
-    verify: (bloc) {
-      verify(usecase.execute());
+    verify: (blocAct) {
+      verify(mockGetTopRatedTVSeries.execute());
       return OnTVSeriesTopRatedCalled().props;
     },
   );
 
   blocTest<TVSeriesTopRatedBloc, TVSeriesTopRatedState>(
-    'should emit [Loading, Error] when get data is unsuccessful',
+    'emit loading and error when data unsuccessfull',
     build: () {
-      when(usecase.execute())
+      when(mockGetTopRatedTVSeries.execute())
           .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
-      return tvBloc;
+      return tvSeriesBloc;
     },
-    act: (bloc) => bloc.add(OnTVSeriesTopRatedCalled()),
+    act: (blocAct) => blocAct.add(OnTVSeriesTopRatedCalled()),
     expect: () => [
       TVSeriesTopRatedLoading(),
       TVSeriesTopRatedError('Server Failure'),
     ],
-    verify: (bloc) => TVSeriesTopRatedLoading(),
+    verify: (blocAct) => TVSeriesTopRatedLoading(),
   );
 
   blocTest<TVSeriesTopRatedBloc, TVSeriesTopRatedState>(
-    'should emit [Loading, Empty] when get data is empty',
+    'emit loading and empty when data empty',
     build: () {
-      when(usecase.execute()).thenAnswer((_) async => const Right([]));
-      return tvBloc;
+      when(mockGetTopRatedTVSeries.execute())
+          .thenAnswer((_) async => const Right([]));
+      return tvSeriesBloc;
     },
-    act: (bloc) => bloc.add(OnTVSeriesTopRatedCalled()),
+    act: (blocAct) => blocAct.add(OnTVSeriesTopRatedCalled()),
     expect: () => [
       TVSeriesTopRatedLoading(),
       TVSeriesTopRatedEmpty(),

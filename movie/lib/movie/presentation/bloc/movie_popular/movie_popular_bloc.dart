@@ -15,11 +15,11 @@ class MoviePopularBloc extends Bloc<MoviePopularEvent, MoviePopularState> {
   final GetPopularMovies _getPopularMovies;
 
   MoviePopularBloc(this._getPopularMovies) : super(MoviePopularEmpty()) {
-    on<OnMoviePopularCalled>(_onMoviePopularCalled);
+    on<MoviePopularCalled>(_MoviePopularCalled);
   }
 
-  FutureOr<void> _onMoviePopularCalled(
-    OnMoviePopularCalled event,
+  FutureOr<void> _MoviePopularCalled(
+    MoviePopularCalled event,
     Emitter<MoviePopularState> emit,
   ) async {
     emit(MoviePopularLoading());

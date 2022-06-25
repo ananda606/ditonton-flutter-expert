@@ -12,26 +12,26 @@ import 'tvseries_recommendation_notifier_test.mocks.dart';
   GetTVSeriesRecommendations,
 ])
 void main() {
-  late MockGetTVSeriesRecommendations usecase;
-  late TVSeriesRecommendationBloc tvBloc;
+  late MockGetTVSeriesRecommendations mockGetRecommmend;
+  late TVSeriesRecommendationBloc tvseriesBloc;
 
   const tId = 1;
 
   setUp(() {
-    usecase = MockGetTVSeriesRecommendations();
-    tvBloc = TVSeriesRecommendationBloc(usecase);
+    mockGetRecommmend = MockGetTVSeriesRecommendations();
+    tvseriesBloc = TVSeriesRecommendationBloc(mockGetRecommmend);
   });
 
   test('initial state should be empty', () {
-    expect(tvBloc.state, TVSeriesRecommendationEmpty());
+    expect(tvseriesBloc.state, TVSeriesRecommendationEmpty());
   });
 
   blocTest<TVSeriesRecommendationBloc, TVSeriesRecommendationState>(
-    'should emit [Loading, HasData] when data is gotten successfully',
+    'emit loading and hasdata when success',
     build: () {
-      when(usecase.execute(tId))
+      when(mockGetRecommmend.execute(tId))
           .thenAnswer((_) async => Right(testTVSeriesList));
-      return tvBloc;
+      return tvseriesBloc;
     },
     act: (bloc) => bloc.add(OnTVSeriesRecommendationCalled(tId)),
     expect: () => [
@@ -39,17 +39,17 @@ void main() {
       TVSeriesRecommendationHasData(testTVSeriesList),
     ],
     verify: (bloc) {
-      verify(usecase.execute(tId));
+      verify(mockGetRecommmend.execute(tId));
       return OnTVSeriesRecommendationCalled(tId).props;
     },
   );
 
   blocTest<TVSeriesRecommendationBloc, TVSeriesRecommendationState>(
-    'should emit [Loading, Error] when get data is unsuccessful',
+    'emit loading and error when unsuccess',
     build: () {
-      when(usecase.execute(tId))
+      when(mockGetRecommmend.execute(tId))
           .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
-      return tvBloc;
+      return tvseriesBloc;
     },
     act: (bloc) => bloc.add(OnTVSeriesRecommendationCalled(tId)),
     expect: () => [
@@ -62,8 +62,9 @@ void main() {
   blocTest<TVSeriesRecommendationBloc, TVSeriesRecommendationState>(
     'should emit [Loading, Empty] when get data is empty',
     build: () {
-      when(usecase.execute(tId)).thenAnswer((_) async => const Right([]));
-      return tvBloc;
+      when(mockGetRecommmend.execute(tId))
+          .thenAnswer((_) async => const Right([]));
+      return tvseriesBloc;
     },
     act: (bloc) => bloc.add(OnTVSeriesRecommendationCalled(tId)),
     expect: () => [

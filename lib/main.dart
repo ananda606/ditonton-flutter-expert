@@ -5,7 +5,6 @@ import 'package:movie/movie.dart';
 import 'package:watchlist/watchlist.dart';
 import 'package:search/search.dart';
 import 'package:tvseries/tvseries.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +14,7 @@ import 'package:ditonton/injection.dart' as di;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await SSLPinningClient();
   di.init();
   runApp(MyApp());
 }

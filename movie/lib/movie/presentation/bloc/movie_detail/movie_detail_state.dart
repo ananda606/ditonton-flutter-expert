@@ -3,14 +3,18 @@ part of 'movie_detail_bloc.dart';
 @immutable
 abstract class MovieDetailState extends Equatable {}
 
-class MovieDetailEmpty extends MovieDetailState {
+class MovieDetailLoading extends MovieDetailState {
   @override
   List<Object> get props => [];
 }
 
-class MovieDetailLoading extends MovieDetailState {
+class MovieDetailHasData extends MovieDetailState {
+  final MovieDetail result;
+
+  MovieDetailHasData(this.result);
+
   @override
-  List<Object> get props => [];
+  List<Object> get props => [result];
 }
 
 class MovieDetailError extends MovieDetailState {
@@ -22,11 +26,7 @@ class MovieDetailError extends MovieDetailState {
   List<Object> get props => [message];
 }
 
-class MovieDetailHasData extends MovieDetailState {
-  final MovieDetail result;
-
-  MovieDetailHasData(this.result);
-
+class MovieDetailEmpty extends MovieDetailState {
   @override
-  List<Object> get props => [result];
+  List<Object> get props => [];
 }

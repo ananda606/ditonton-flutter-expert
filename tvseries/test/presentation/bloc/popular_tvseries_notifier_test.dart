@@ -11,12 +11,12 @@ import 'popular_tvseries_notifier_test.mocks.dart';
 
 @GenerateMocks([GetPopularTVSeries])
 void main() {
-  late MockGetPopularTVSeries usecase;
+  late MockGetPopularTVSeries mockGetPopularTVSeries;
   late TVSeriesPopularBloc tvBloc;
 
   setUp(() {
-    usecase = MockGetPopularTVSeries();
-    tvBloc = TVSeriesPopularBloc(usecase);
+    mockGetPopularTVSeries = MockGetPopularTVSeries();
+    tvBloc = TVSeriesPopularBloc(mockGetPopularTVSeries);
   });
 
   test('initial state should be empty', () {
@@ -24,9 +24,10 @@ void main() {
   });
 
   blocTest<TVSeriesPopularBloc, TVSeriesPopularState>(
-    'should emit [Loading, HasData] when data is gotten successfully',
+    'emit loading and hasData when data success',
     build: () {
-      when(usecase.execute()).thenAnswer((_) async => Right(testTVSeriesList));
+      when(mockGetPopularTVSeries.execute())
+          .thenAnswer((_) async => Right(testTVSeriesList));
       return tvBloc;
     },
     act: (bloc) => bloc.add(OnTVSeriesPopularCalled()),
@@ -35,15 +36,15 @@ void main() {
       TVSeriesPopularHasData(testTVSeriesList),
     ],
     verify: (bloc) {
-      verify(usecase.execute());
+      verify(mockGetPopularTVSeries.execute());
       return OnTVSeriesPopularCalled().props;
     },
   );
 
   blocTest<TVSeriesPopularBloc, TVSeriesPopularState>(
-    'should emit [Loading, Error] when get data is unsuccessful',
+    ' emit loading and error when data unsuccessful',
     build: () {
-      when(usecase.execute())
+      when(mockGetPopularTVSeries.execute())
           .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       return tvBloc;
     },
@@ -56,9 +57,10 @@ void main() {
   );
 
   blocTest<TVSeriesPopularBloc, TVSeriesPopularState>(
-    'should emit [Loading, Empty] when get data is empty',
+    'emit loading and empty when data empty',
     build: () {
-      when(usecase.execute()).thenAnswer((_) async => const Right([]));
+      when(mockGetPopularTVSeries.execute())
+          .thenAnswer((_) async => const Right([]));
       return tvBloc;
     },
     act: (bloc) => bloc.add(OnTVSeriesPopularCalled()),

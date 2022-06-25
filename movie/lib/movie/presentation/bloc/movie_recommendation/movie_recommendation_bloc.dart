@@ -17,16 +17,15 @@ class MovieRecommendationBloc
 
   MovieRecommendationBloc(this._getMovieRecommendations)
       : super(MovieRecommendationEmpty()) {
-    on<OnMovieRecommendationCalled>(_onMovieRecommendationCalled);
+    on<MovieRecommendationCalled>(_MovieRecommendationCalled);
   }
 
-  FutureOr<void> _onMovieRecommendationCalled(
-    OnMovieRecommendationCalled event,
+  FutureOr<void> _MovieRecommendationCalled(
+    MovieRecommendationCalled event,
     Emitter<MovieRecommendationState> emit,
   ) async {
     final id = event.id;
     emit(MovieRecommendationLoading());
-
     final result = await _getMovieRecommendations.execute(id);
 
     result.fold(

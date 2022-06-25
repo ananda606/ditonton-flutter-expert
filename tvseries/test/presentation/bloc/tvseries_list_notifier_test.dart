@@ -15,12 +15,12 @@ import 'tvseries_list_notifier_test.mocks.dart';
   GetTopRatedTVSeries,
 ])
 void main() {
-  late MockGetOnAirTVSeries usecase;
+  late MockGetOnAirTVSeries mockGetOnAirTVSeries;
   late TVSeriesListBloc tvBloc;
 
   setUp(() {
-    usecase = MockGetOnAirTVSeries();
-    tvBloc = TVSeriesListBloc(usecase);
+    mockGetOnAirTVSeries = MockGetOnAirTVSeries();
+    tvBloc = TVSeriesListBloc(mockGetOnAirTVSeries);
   });
 
   test('initial state should be empty', () {
@@ -28,44 +28,46 @@ void main() {
   });
 
   blocTest<TVSeriesListBloc, TVSeriesListState>(
-    'should emit [Loading, HasData] when data is gotten successfully',
+    'emit loading and hasdata when success',
     build: () {
-      when(usecase.execute()).thenAnswer((_) async => Right(testTVSeriesList));
+      when(mockGetOnAirTVSeries.execute())
+          .thenAnswer((_) async => Right(testTVSeriesList));
       return tvBloc;
     },
-    act: (bloc) => bloc.add(OnTVSeriesListCalled()),
+    act: (blocAct) => blocAct.add(OnTVSeriesListCalled()),
     expect: () => [
       TVSeriesListLoading(),
       TVSeriesListHasData(testTVSeriesList),
     ],
-    verify: (bloc) {
-      verify(usecase.execute());
+    verify: (blocAct) {
+      verify(mockGetOnAirTVSeries.execute());
       return OnTVSeriesListCalled().props;
     },
   );
 
   blocTest<TVSeriesListBloc, TVSeriesListState>(
-    'should emit [Loading, Error] when get data is unsuccessful',
+    'emit loading and error when unsuccess',
     build: () {
-      when(usecase.execute())
+      when(mockGetOnAirTVSeries.execute())
           .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       return tvBloc;
     },
-    act: (bloc) => bloc.add(OnTVSeriesListCalled()),
+    act: (blocAct) => blocAct.add(OnTVSeriesListCalled()),
     expect: () => [
       TVSeriesListLoading(),
       TVSeriesListError('Server Failure'),
     ],
-    verify: (bloc) => TVSeriesListLoading(),
+    verify: (blocAct) => TVSeriesListLoading(),
   );
 
   blocTest<TVSeriesListBloc, TVSeriesListState>(
-    'should emit [Loading, Empty] when get data is empty',
+    'emit loading and empty when unsuccess',
     build: () {
-      when(usecase.execute()).thenAnswer((_) async => const Right([]));
+      when(mockGetOnAirTVSeries.execute())
+          .thenAnswer((_) async => const Right([]));
       return tvBloc;
     },
-    act: (bloc) => bloc.add(OnTVSeriesListCalled()),
+    act: (blocAct) => blocAct.add(OnTVSeriesListCalled()),
     expect: () => [
       TVSeriesListLoading(),
       TVSeriesListEmpty(),

@@ -11,12 +11,12 @@ import 'top_rated_movies_notifier_test.mocks.dart';
 
 @GenerateMocks([GetTopRatedMovies])
 void main() {
-  late MockGetTopRatedMovies usecase;
+  late MockGetTopRatedMovies mockGetTopRatedMovies;
   late MovieTopRatedBloc movieBloc;
 
   setUp(() {
-    usecase = MockGetTopRatedMovies();
-    movieBloc = MovieTopRatedBloc(usecase);
+    mockGetTopRatedMovies = MockGetTopRatedMovies();
+    movieBloc = MovieTopRatedBloc(mockGetTopRatedMovies);
   });
 
   test('initial state should be empty', () {
@@ -24,44 +24,46 @@ void main() {
   });
 
   blocTest<MovieTopRatedBloc, MovieTopRatedState>(
-    'should emit [Loading, HasData] when data is gotten successfully',
+    'emit loading and hasdata when data is success',
     build: () {
-      when(usecase.execute()).thenAnswer((_) async => Right(testMovieList));
+      when(mockGetTopRatedMovies.execute())
+          .thenAnswer((_) async => Right(testMovieList));
       return movieBloc;
     },
-    act: (bloc) => bloc.add(OnMovieTopRatedCalled()),
+    act: (blocAct) => blocAct.add(MovieTopRatedCalled()),
     expect: () => [
       MovieTopRatedLoading(),
       MovieTopRatedHasData(testMovieList),
     ],
-    verify: (bloc) {
-      verify(usecase.execute());
-      return OnMovieTopRatedCalled().props;
+    verify: (blocAct) {
+      verify(mockGetTopRatedMovies.execute());
+      return MovieTopRatedCalled().props;
     },
   );
 
   blocTest<MovieTopRatedBloc, MovieTopRatedState>(
-    'should emit [Loading, Error] when get data is unsuccessful',
+    'emit loading and error when data is unsuccess',
     build: () {
-      when(usecase.execute())
+      when(mockGetTopRatedMovies.execute())
           .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       return movieBloc;
     },
-    act: (bloc) => bloc.add(OnMovieTopRatedCalled()),
+    act: (blocAct) => blocAct.add(MovieTopRatedCalled()),
     expect: () => [
       MovieTopRatedLoading(),
       MovieTopRatedError('Server Failure'),
     ],
-    verify: (bloc) => MovieTopRatedLoading(),
+    verify: (blocAct) => MovieTopRatedLoading(),
   );
 
   blocTest<MovieTopRatedBloc, MovieTopRatedState>(
-    'should emit [Loading, Empty] when get data is empty',
+    'emit loading and empty when data is empty',
     build: () {
-      when(usecase.execute()).thenAnswer((_) async => const Right([]));
+      when(mockGetTopRatedMovies.execute())
+          .thenAnswer((_) async => const Right([]));
       return movieBloc;
     },
-    act: (bloc) => bloc.add(OnMovieTopRatedCalled()),
+    act: (blocAct) => blocAct.add(MovieTopRatedCalled()),
     expect: () => [
       MovieTopRatedLoading(),
       MovieTopRatedEmpty(),

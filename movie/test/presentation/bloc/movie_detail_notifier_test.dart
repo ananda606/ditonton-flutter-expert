@@ -14,46 +14,44 @@ import 'movie_detail_notifier_test.mocks.dart';
   GetMovieRecommendations,
 ])
 void main() {
-  late MockGetMovieDetail usecase;
+  late MockGetMovieDetail mockGetMovieDetail;
   late MovieDetailBloc movieBloc;
-
   const tId = 1;
-
   setUp(() {
-    usecase = MockGetMovieDetail();
-    movieBloc = MovieDetailBloc(usecase);
+    mockGetMovieDetail = MockGetMovieDetail();
+    movieBloc = MovieDetailBloc(mockGetMovieDetail);
   });
 
-  test('initial state should be empty', () {
+  test('initial state empty', () {
     expect(movieBloc.state, MovieDetailEmpty());
   });
 
   blocTest<MovieDetailBloc, MovieDetailState>(
-    'should emit [Loading, HasData] when data is gotten successfully',
+    'when data success emit loading and hasData state',
     build: () {
-      when(usecase.execute(tId))
+      when(mockGetMovieDetail.execute(tId))
           .thenAnswer((_) async => const Right(testMovieDetail));
       return movieBloc;
     },
-    act: (bloc) => bloc.add(OnMovieDetailCalled(tId)),
+    act: (blocAct) => blocAct.add(MovieDetailCalled(tId)),
     expect: () => [
       MovieDetailLoading(),
       MovieDetailHasData(testMovieDetail),
     ],
     verify: (bloc) {
-      verify(usecase.execute(tId));
-      return OnMovieDetailCalled(tId).props;
+      verify(mockGetMovieDetail.execute(tId));
+      return MovieDetailCalled(tId).props;
     },
   );
 
   blocTest<MovieDetailBloc, MovieDetailState>(
-    'should emit [Loading, Error] when get data is unsuccessful',
+    'when data unsuccess emitting loading or error state',
     build: () {
-      when(usecase.execute(tId))
+      when(mockGetMovieDetail.execute(tId))
           .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       return movieBloc;
     },
-    act: (bloc) => bloc.add(OnMovieDetailCalled(tId)),
+    act: (bloc) => bloc.add(MovieDetailCalled(tId)),
     expect: () => [
       MovieDetailLoading(),
       MovieDetailError('Server Failure'),
