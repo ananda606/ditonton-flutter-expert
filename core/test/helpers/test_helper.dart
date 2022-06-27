@@ -13,6 +13,6 @@ import 'package:http/http.dart' as http;
   DatabaseHelperTVSeries,
 ], customMocks: [
   MockSpec<http.Client>(as: #MockHttpClient),
-  MockSpec<SSLPinningClient>(as: #MockApiIOClient),
+  MockSpec<SSLPinningClient>(as: #MockSSLPinningClient),
 ])
 void main() {}

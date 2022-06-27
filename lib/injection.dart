@@ -90,6 +90,6 @@ void init() {
   locator.registerLazySingleton<DatabaseHelperTVSeries>(
       () => DatabaseHelperTVSeries());
 
-  locator.registerLazySingleton(() => http.Client());
+  // locator.registerLazySingleton(() => http.Client());
   locator.registerLazySingleton<SSLPinningClient>(() => SSLPinningClient());
 }

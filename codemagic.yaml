@@ -50,7 +50,7 @@ workflows:
       - build/**/outputs/**/mapping.txt
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
-      - '*.snap'
+      - '*.snap'flutt
       - build/windows/**/*.msix
       - flutter_drive.log
     publishing:

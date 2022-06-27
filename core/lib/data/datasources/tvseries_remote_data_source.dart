@@ -12,7 +12,7 @@ abstract class TVSeriesRemoteDataSource {
 }
 
 class TVSeriesRemoteDataSourceImpl implements TVSeriesRemoteDataSource {
-  final http.Client client;
+  final SSLPinningClient client;
   // ignore: constant_identifier_names
   static const API_KEY = 'api_key=2174d146bb9c0eab47529b2e77d6b526';
   // ignore: constant_identifier_names

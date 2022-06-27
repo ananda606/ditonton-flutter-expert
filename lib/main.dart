@@ -14,7 +14,7 @@ import 'package:ditonton/injection.dart' as di;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await SSLPinningClient();
+
   di.init();
   runApp(MyApp());
 }

@@ -17,7 +17,7 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
   // ignore: constant_identifier_names
   static const BASE_URL = 'https://api.themoviedb.org/3';
 
-  final http.Client client;
+  final SSLPinningClient client;
 
   MovieRemoteDataSourceImpl({required this.client});
 
