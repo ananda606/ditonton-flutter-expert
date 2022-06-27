@@ -1,6 +1,6 @@
 # Automatically generated on 2022-06-23 UTC from https://codemagic.io/app/62b280bce5cce740d3f2a69f/settings
 # Note that this configuration is not an exact match to UI settings. Review and adjust as necessary.
-
+# https://api.codemagic.io/apps/62b280bce5cce740d3f2a69f/default-workflow/status_badge.svg
 workflows:
   default-workflow:
     name: Default Workflow
