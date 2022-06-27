@@ -53,8 +53,16 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                 isAddedToWatchlist,
               ),
             );
+          } else if (state is MovieDetailEmpty) {
+            return const Text(
+              'empty',
+              key: Key('empty_message'),
+            );
           } else {
-            return const Text('error');
+            return const Text(
+              'error',
+              key: Key('error_message'),
+            );
           }
         },
       ),
@@ -203,7 +211,10 @@ class DetailContent extends StatelessWidget {
                                     child: CircularProgressIndicator(),
                                   );
                                 } else if (state is MovieRecommendationError) {
-                                  return Text(state.message);
+                                  return Text(
+                                    state.message,
+                                    key: Key('error_message'),
+                                  );
                                 } else if (state
                                     is MovieRecommendationHasData) {
                                   return SizedBox(
@@ -247,7 +258,10 @@ class DetailContent extends StatelessWidget {
                                     ),
                                   );
                                 } else {
-                                  return Container();
+                                  return Text(
+                                    'empty',
+                                    key: Key('empty_message'),
+                                  );
                                 }
                               },
                             ),

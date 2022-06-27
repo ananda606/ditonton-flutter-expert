@@ -31,6 +31,7 @@ class _TopRatedTVSeriesPageState extends State<TopRatedTVSeriesPage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: BlocBuilder<TVSeriesTopRatedBloc, TVSeriesTopRatedState>(
+          key: Key('top rated tvseries'),
           builder: (context, state) {
             if (state is TVSeriesTopRatedLoading) {
               return const Center(
@@ -43,6 +44,11 @@ class _TopRatedTVSeriesPageState extends State<TopRatedTVSeriesPage> {
                   return TVSeriesCard(tvSeries);
                 },
                 itemCount: state.result.length,
+              );
+            } else if (state is TVSeriesTopRatedEmpty) {
+              return const Center(
+                key: Key('empty_message'),
+                child: Text('empty'),
               );
             } else {
               return const Center(

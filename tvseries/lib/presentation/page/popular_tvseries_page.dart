@@ -44,6 +44,11 @@ class _PopularTVSeriesPageState extends State<PopularTVSeriesPage> {
                 },
                 itemCount: state.result.length,
               );
+            } else if (state is TVSeriesPopularEmpty) {
+              return const Center(
+                key: Key('empty_message'),
+                child: Text('empty'),
+              );
             } else {
               return const Center(
                 key: Key('error_message'),

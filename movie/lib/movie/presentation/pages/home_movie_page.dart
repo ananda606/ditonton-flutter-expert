@@ -44,6 +44,7 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
+          key: Key('home_movie'),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -59,8 +60,16 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
                   );
                 } else if (state is MovieListHasData) {
                   return MovieList(state.result);
+                } else if (state is MovieListEmpty) {
+                  return const Text(
+                    'empty',
+                    key: Key('empty_message'),
+                  );
                 } else {
-                  return const Text('Failed');
+                  return const Text(
+                    'error',
+                    key: Key('error_message'),
+                  );
                 }
               }),
               _buildSubHeading(
@@ -76,8 +85,16 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
                   );
                 } else if (state is MoviePopularHasData) {
                   return MovieList(state.result);
+                } else if (state is MoviePopularEmpty) {
+                  return const Text(
+                    'empty',
+                    key: Key('empty_message'),
+                  );
                 } else {
-                  return const Text('Failed');
+                  return const Text(
+                    'error',
+                    key: Key('error_message'),
+                  );
                 }
               }),
               _buildSubHeading(
@@ -93,8 +110,16 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
                   );
                 } else if (state is MovieTopRatedHasData) {
                   return MovieList(state.result);
+                } else if (state is MovieTopRatedEmpty) {
+                  return const Text(
+                    'empty',
+                    key: Key('empty_message'),
+                  );
                 } else {
-                  return const Text('Failed');
+                  return const Text(
+                    'error',
+                    key: Key('error_message'),
+                  );
                 }
               }),
             ],
@@ -117,7 +142,13 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
-              children: const [Text('See More'), Icon(Icons.arrow_forward_ios)],
+              children: const [
+                Text(
+                  'See More',
+                  key: Key('see_more'),
+                ),
+                Icon(Icons.arrow_forward_ios)
+              ],
             ),
           ),
         ),

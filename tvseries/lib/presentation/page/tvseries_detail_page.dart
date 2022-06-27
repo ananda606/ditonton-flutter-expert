@@ -53,8 +53,16 @@ class _TVSeriesDetailPageState extends State<TVSeriesDetailPage> {
             return SafeArea(
               child: DetailContent(tvSeries, isAddedToWatchlist),
             );
+          } else if (state is TVSeriesDetailEmpty) {
+            return const Text(
+              'empty',
+              key: Key('empty_message'),
+            );
           } else {
-            return const Text('error');
+            return const Text(
+              'error',
+              key: Key('error_message'),
+            );
           }
         },
       ),
@@ -131,15 +139,15 @@ class DetailContent extends StatelessWidget {
                                           ? const Text('Added to Watchlist')
                                           : const Text('Removed from watchlist')
                                       : !isAddedWatchlist
-                                          ? const Text('Added to watchlist')
+                                          ? const Text('added to watchlist')
                                           : const Text(
-                                              'Removed from watchlist'),
+                                              'removed from watchlist'),
                                 );
 
                                 if (message ==
                                         const Text('Added to Watchlist') ||
                                     message ==
-                                        const Text('Removed from watchlist')) {
+                                        const Text('Removed from Watchlist')) {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(content: message));
                                 } else {
@@ -228,7 +236,10 @@ class DetailContent extends StatelessWidget {
                                   );
                                 } else if (state
                                     is TVSeriesRecommendationError) {
-                                  return const Text('error');
+                                  return const Text(
+                                    'error',
+                                    key: Key('error_message'),
+                                  );
                                 } else if (state
                                     is TVSeriesRecommendationHasData) {
                                   return SizedBox(
@@ -272,7 +283,9 @@ class DetailContent extends StatelessWidget {
                                     ),
                                   );
                                 } else {
-                                  return Container();
+                                  return Container(
+                                    key: Key('empty_message'),
+                                  );
                                 }
                               },
                             ),

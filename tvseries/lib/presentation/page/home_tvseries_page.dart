@@ -54,14 +54,26 @@ class _HomeTVSeriesPageState extends State<HomeTVSeriesPage> {
               ),
               BlocBuilder<TVSeriesListBloc, TVSeriesListState>(
                   builder: (context, state) {
-                if (state is TVSeriesDetailLoading) {
+                if (state is TVSeriesListLoading) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
                 } else if (state is TVSeriesListHasData) {
                   return TVSeriesList(state.result);
+                } else if (state is TVSeriesListEmpty) {
+                  return const Center(
+                    child: Text(
+                      'empty',
+                      key: Key('empty_message'),
+                    ),
+                  );
                 } else {
-                  return const Text('Failed to fetch data');
+                  return const Center(
+                    child: Text(
+                      'error',
+                      key: Key('error_message'),
+                    ),
+                  );
                 }
               }),
               _buildSubHeading(
@@ -77,8 +89,18 @@ class _HomeTVSeriesPageState extends State<HomeTVSeriesPage> {
                   );
                 } else if (state is TVSeriesPopularHasData) {
                   return TVSeriesList(state.result);
+                } else if (state is TVSeriesPopularEmpty) {
+                  return const Center(
+                    child: Text(
+                      'empty',
+                      key: Key('empty_message'),
+                    ),
+                  );
                 } else {
-                  return const Text('Failed');
+                  return const Text(
+                    'error',
+                    key: Key('error_message'),
+                  );
                 }
               }),
               _buildSubHeading(
@@ -94,8 +116,18 @@ class _HomeTVSeriesPageState extends State<HomeTVSeriesPage> {
                   );
                 } else if (state is TVSeriesTopRatedHasData) {
                   return TVSeriesList(state.result);
+                } else if (state is TVSeriesTopRatedEmpty) {
+                  return const Center(
+                    child: Text(
+                      'empty',
+                      key: Key('empty_message'),
+                    ),
+                  );
                 } else {
-                  return const Text('Failed');
+                  return const Text(
+                    'error',
+                    key: Key('error_message'),
+                  );
                 }
               }),
             ],
@@ -160,8 +192,9 @@ class TVSeriesList extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: '$BASE_IMAGE_URL${tv.posterPath}',
                   placeholder: (context, url) => const Center(
+                      child: Center(
                     child: CircularProgressIndicator(),
-                  ),
+                  )),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
               ),

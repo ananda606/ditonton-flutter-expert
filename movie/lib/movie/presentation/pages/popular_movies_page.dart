@@ -32,6 +32,7 @@ class _PopularMoviesPageState extends State<PopularMoviesPage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: BlocBuilder<MoviePopularBloc, MoviePopularState>(
+          key: Key('popularpage'),
           builder: (context, state) {
             if (state is MoviePopularLoading) {
               return const Center(
@@ -44,6 +45,11 @@ class _PopularMoviesPageState extends State<PopularMoviesPage> {
                   return MovieCard(movie);
                 },
                 itemCount: state.result.length,
+              );
+            } else if (state is MoviePopularEmpty) {
+              return const Center(
+                key: Key('empty_message'),
+                child: Text('empty'),
               );
             } else {
               return const Center(

@@ -32,6 +32,7 @@ class _TopRatedMoviesPageState extends State<TopRatedMoviesPage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: BlocBuilder<MovieTopRatedBloc, MovieTopRatedState>(
+          key: Key('top_rated_page'),
           builder: (context, state) {
             if (state is MovieTopRatedLoading) {
               return const Center(
@@ -44,6 +45,11 @@ class _TopRatedMoviesPageState extends State<TopRatedMoviesPage> {
                   return MovieCard(movie);
                 },
                 itemCount: state.result.length,
+              );
+            } else if (state is MovieTopRatedEmpty) {
+              return const Center(
+                key: Key('empty_message'),
+                child: Text('empty'),
               );
             } else {
               return const Center(
