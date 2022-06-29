@@ -18,6 +18,7 @@ class MovieListBloc extends Bloc<MovieListEvent, MovieListState> {
     on<MovieListCalled>(_MovieListCalled);
   }
 
+  // ignore: non_constant_identifier_names
   FutureOr<void> _MovieListCalled(
       MovieListEvent event, Emitter<MovieListState> emit) async {
     emit(MovieListLoading());

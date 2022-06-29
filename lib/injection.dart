@@ -3,7 +3,6 @@ import 'package:movie/movie.dart';
 import 'package:watchlist/watchlist.dart';
 import 'package:search/search.dart';
 import 'package:tvseries/tvseries.dart';
-import 'package:http/http.dart' as http;
 import 'package:get_it/get_it.dart';
 
 final locator = GetIt.instance;

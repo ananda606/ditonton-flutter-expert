@@ -5,9 +5,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:watchlist/watchlist.dart';
 import 'package:core/core.dart';
 import 'package:movie/movie.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:search/search.dart';
 
 class FakeHome extends StatelessWidget {
   const FakeHome({
@@ -118,68 +116,16 @@ class FakeMovieWatchlistBloc
     implements MovieWatchlistBloc {}
 
 void main() {
-  late FakeMovieListBloc fakeMovieListBloc;
-  late FakePopularMovieBloc fakePopularMovieBloc;
-  late FakeTopRatedMovieBloc fakeTopRatedMovieBloc;
-
   setUp(() {
     registerFallbackValue(FakeMovieListEvent());
     registerFallbackValue(FakeMovieListState());
-    fakeMovieListBloc = FakeMovieListBloc();
 
     registerFallbackValue(FakePopularMovieEvent());
     registerFallbackValue(FakePopularMovieState());
-    fakePopularMovieBloc = FakePopularMovieBloc();
 
     registerFallbackValue(FakeTopRatedMovieEvent());
     registerFallbackValue(FakeTopRatedMovieState());
-    fakeTopRatedMovieBloc = FakeTopRatedMovieBloc();
 
     TestWidgetsFlutterBinding.ensureInitialized();
   });
-
-  Widget _createTestableWidget(Widget body) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<MovieListBloc>(
-          create: (context) => fakeMovieListBloc,
-        ),
-        BlocProvider<MoviePopularBloc>(
-          create: (context) => fakePopularMovieBloc,
-        ),
-        BlocProvider<MovieTopRatedBloc>(
-          create: (context) => fakeTopRatedMovieBloc,
-        ),
-      ],
-      child: MaterialApp(
-        home: body,
-      ),
-    );
-  }
-
-  Widget _createAnotherTestableWidget(Widget body) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<MovieListBloc>(
-          create: (context) => fakeMovieListBloc,
-        ),
-        BlocProvider<MoviePopularBloc>(
-          create: (context) => fakePopularMovieBloc,
-        ),
-        BlocProvider<MovieTopRatedBloc>(
-          create: (context) => fakeTopRatedMovieBloc,
-        ),
-      ],
-      child: body,
-    );
-  }
-
-  final routes = <String, WidgetBuilder>{
-    '/': (context) => const FakeHome(),
-    '/next': (context) => _createAnotherTestableWidget(HomeMoviePage()),
-    MovieDetailPage.ROUTE_NAME: (context) => const FakeDestination(),
-    TopRatedMoviesPage.ROUTE_NAME: (context) => const FakeDestination(),
-    PopularMoviesPage.ROUTE_NAME: (context) => const FakeDestination(),
-    SearchPage.ROUTE_NAME: (context) => const FakeDestination(),
-  };
 }

@@ -3,9 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie/movie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bloc_test/bloc_test.dart';
-import 'package:bloc/bloc.dart';
-import 'package:mockito/annotations.dart';
+// ignore: depend_on_referenced_packages
 import 'package:mocktail/mocktail.dart';
 import 'test_helper/test_helper.dart';
 import '../../dummy_data/dummy_objects.dart';
@@ -36,9 +34,10 @@ void main() {
   }
 
   final routes = <String, WidgetBuilder>{
-    '/': (context) => FakeHome(),
-    '/next': (context) => _createAnotherTestableWidget(TopRatedMoviesPage()),
-    MovieDetailPage.ROUTE_NAME: (context) => FakeDestination(),
+    '/': (context) => const FakeHome(),
+    '/next': (context) =>
+        _createAnotherTestableWidget(const TopRatedMoviesPage()),
+    MovieDetailPage.ROUTE_NAME: (context) => const FakeDestination(),
   };
 
   testWidgets('Page should display center progress bar when loading',
@@ -48,7 +47,7 @@ void main() {
     final progressBarFinder = find.byType(CircularProgressIndicator);
     final centerFinder = find.byType(Center);
 
-    await tester.pumpWidget(_createTestableWidget(TopRatedMoviesPage()));
+    await tester.pumpWidget(_createTestableWidget(const TopRatedMoviesPage()));
 
     expect(centerFinder, findsOneWidget);
     expect(progressBarFinder, findsOneWidget);
@@ -60,7 +59,7 @@ void main() {
 
     final listViewFinder = find.byType(ListView);
 
-    await tester.pumpWidget(_createTestableWidget(TopRatedMoviesPage()));
+    await tester.pumpWidget(_createTestableWidget(const TopRatedMoviesPage()));
 
     expect(listViewFinder, findsOneWidget);
   });
@@ -69,9 +68,9 @@ void main() {
       (WidgetTester tester) async {
     when(() => fakeBloc.state).thenReturn(MovieTopRatedError('error'));
 
-    final textFinder = find.byKey(Key('error_message'));
+    final textFinder = find.byKey(const Key('error_message'));
 
-    await tester.pumpWidget(_createTestableWidget(TopRatedMoviesPage()));
+    await tester.pumpWidget(_createTestableWidget(const TopRatedMoviesPage()));
 
     expect(textFinder, findsOneWidget);
   });
@@ -80,9 +79,9 @@ void main() {
       (WidgetTester tester) async {
     when(() => fakeBloc.state).thenReturn(MovieTopRatedEmpty());
 
-    final textFinder = find.byKey(Key('empty_message'));
+    final textFinder = find.byKey(const Key('empty_message'));
 
-    await tester.pumpWidget(_createTestableWidget(TopRatedMoviesPage()));
+    await tester.pumpWidget(_createTestableWidget(const TopRatedMoviesPage()));
 
     expect(textFinder, findsOneWidget);
   });
@@ -94,17 +93,17 @@ void main() {
       routes: routes,
     ));
 
-    expect(find.byKey(Key('fakeHome')), findsOneWidget);
+    expect(find.byKey(const Key('fakeHome')), findsOneWidget);
 
-    await tester.tap(find.byKey(Key('fakeHome')));
+    await tester.tap(find.byKey(const Key('fakeHome')));
 
     for (var i = 0; i < 5; i++) {
-      await tester.pump(Duration(seconds: 1));
+      await tester.pump(const Duration(seconds: 1));
     }
 
     final movieCardFinder = find.byType(MovieCard);
     expect(movieCardFinder, findsOneWidget);
-    expect(find.byKey(Key('top_rated_page')), findsOneWidget);
-    expect(find.byKey(Key('fakeHome')), findsNothing);
+    expect(find.byKey(const Key('top_rated_page')), findsOneWidget);
+    expect(find.byKey(const Key('fakeHome')), findsNothing);
   });
 }

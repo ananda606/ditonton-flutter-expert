@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+// ignore: depend_on_referenced_packages
 import 'package:mocktail/mocktail.dart';
-import 'package:search/presentation/pages/search_page.dart';
 import 'package:tvseries/tvseries.dart';
 import 'test/test_helper.dart';
 
@@ -48,32 +48,6 @@ void main() {
     );
   }
 
-  Widget _createAnotherTestableWidget(Widget body) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<TVSeriesListBloc>(
-          create: (context) => fakeTVSeriesListBloc,
-        ),
-        BlocProvider<TVSeriesPopularBloc>(
-          create: (context) => fakeTVSeriesPopularBloc,
-        ),
-        BlocProvider<TVSeriesTopRatedBloc>(
-          create: (context) => fakeTVSeriesTopBloc,
-        ),
-      ],
-      child: body,
-    );
-  }
-
-  final routes = <String, WidgetBuilder>{
-    '/': (context) => const FakeHome(),
-    '/next': (context) => _createAnotherTestableWidget(HomeTVSeriesPage()),
-    TVSeriesDetailPage.ROUTE_NAME: (context) => const FakeDestination(),
-    TopRatedTVSeriesPage.ROUTE_NAME: (context) => const FakeDestination(),
-    PopularTVSeriesPage.ROUTE_NAME: (context) => const FakeDestination(),
-    SearchPage.ROUTE_NAME: (context) => const FakeDestination(),
-  };
-
   testWidgets('Page should display center progress bar when loading',
       (tester) async {
     when(() => fakeTVSeriesListBloc.state).thenReturn(TVSeriesListLoading());
@@ -83,7 +57,7 @@ void main() {
 
     final progressBarFinder = find.byType(CircularProgressIndicator);
 
-    await tester.pumpWidget(_createTestableWidget(HomeTVSeriesPage()));
+    await tester.pumpWidget(_createTestableWidget(const HomeTVSeriesPage()));
 
     expect(progressBarFinder, findsNWidgets(3));
   });
@@ -100,7 +74,7 @@ void main() {
     final listViewFinder = find.byType(ListView);
     final tvListFinder = find.byType(TVSeriesList);
 
-    await tester.pumpWidget(_createTestableWidget(HomeTVSeriesPage()));
+    await tester.pumpWidget(_createTestableWidget(const HomeTVSeriesPage()));
 
     expect(listViewFinder, findsNWidgets(3));
     expect(tvListFinder, findsNWidgets(3));
@@ -114,7 +88,7 @@ void main() {
     when(() => fakeTVSeriesTopBloc.state)
         .thenReturn(TVSeriesTopRatedError('error'));
 
-    await tester.pumpWidget(_createTestableWidget(HomeTVSeriesPage()));
+    await tester.pumpWidget(_createTestableWidget(const HomeTVSeriesPage()));
 
     expect(find.byKey(const Key('error_message')), findsNWidgets(3));
   });
@@ -125,7 +99,7 @@ void main() {
         .thenReturn(TVSeriesPopularEmpty());
     when(() => fakeTVSeriesTopBloc.state).thenReturn(TVSeriesTopRatedEmpty());
 
-    await tester.pumpWidget(_createTestableWidget(HomeTVSeriesPage()));
+    await tester.pumpWidget(_createTestableWidget(const HomeTVSeriesPage()));
 
     expect(find.byKey(const Key('empty_message')), findsNWidgets(3));
   });

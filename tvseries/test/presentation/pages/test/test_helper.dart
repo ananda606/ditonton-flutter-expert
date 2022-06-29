@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tvseries/tvseries.dart';
 import 'package:bloc_test/bloc_test.dart';
+// ignore: depend_on_referenced_packages
 import 'package:mocktail/mocktail.dart';
 import 'package:watchlist/watchlist.dart';
 

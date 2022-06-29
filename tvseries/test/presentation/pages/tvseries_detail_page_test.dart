@@ -1,13 +1,11 @@
-import 'package:core/core.dart';
 import 'package:tvseries/tvseries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:watchlist/watchlist.dart';
 import 'test/test_helper.dart';
 import '../../dummy_data/dummy_objects.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bloc_test/bloc_test.dart';
+// ignore: depend_on_referenced_packages
 import 'package:mocktail/mocktail.dart';
 
 void main() {
@@ -67,8 +65,9 @@ void main() {
 
   final routes = <String, WidgetBuilder>{
     '/': (context) => const FakeHome(),
-    '/next': (context) => _makeAnotherTestableWidget(TVSeriesDetailPage(id: 1)),
-    TVSeriesDetailPage.ROUTE_NAME: (context) => FakeDestination(),
+    '/next': (context) =>
+        _makeAnotherTestableWidget(const TVSeriesDetailPage(id: 1)),
+    TVSeriesDetailPage.ROUTE_NAME: (context) => const FakeDestination(),
   };
 
   testWidgets('should show circular progress when TV detail is loading',
@@ -95,7 +94,7 @@ void main() {
     await tester.pumpWidget(
         _makeTestableWidget(TVSeriesDetailPage(id: testTVSeriesDetail.id)));
 
-    expect(find.byKey(Key('error_message')), findsOneWidget);
+    expect(find.byKey(const Key('error_message')), findsOneWidget);
   });
 
   testWidgets('should show empty message progress when TV detail is empty',
@@ -108,7 +107,7 @@ void main() {
     await tester.pumpWidget(
         _makeTestableWidget(TVSeriesDetailPage(id: testTVSeriesDetail.id)));
 
-    expect(find.byKey(Key('empty_message')), findsOneWidget);
+    expect(find.byKey(const Key('empty_message')), findsOneWidget);
   });
 
   testWidgets(
@@ -159,7 +158,7 @@ void main() {
     await tester.pumpWidget(
         _makeTestableWidget(TVSeriesDetailPage(id: testTVSeriesDetail.id)));
 
-    expect(find.byKey(Key('error_message')), findsOneWidget);
+    expect(find.byKey(const Key('error_message')), findsOneWidget);
   });
 
   testWidgets('should show Container when TV recom is empty', (tester) async {
@@ -173,7 +172,7 @@ void main() {
     await tester.pumpWidget(
         _makeTestableWidget(TVSeriesDetailPage(id: testTVSeriesDetail.id)));
 
-    expect(find.byKey(Key('empty_message')), findsOneWidget);
+    expect(find.byKey(const Key('empty_message')), findsOneWidget);
   });
 
   testWidgets(

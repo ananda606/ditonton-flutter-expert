@@ -31,7 +31,7 @@ class _TopRatedTVSeriesPageState extends State<TopRatedTVSeriesPage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: BlocBuilder<TVSeriesTopRatedBloc, TVSeriesTopRatedState>(
-          key: Key('top rated tvseries'),
+          key: const Key('top rated tvseries'),
           builder: (context, state) {
             if (state is TVSeriesTopRatedLoading) {
               return const Center(

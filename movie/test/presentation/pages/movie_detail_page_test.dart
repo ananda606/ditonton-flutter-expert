@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bloc_test/bloc_test.dart';
 import 'package:watchlist/watchlist.dart';
+// ignore: depend_on_referenced_packages
 import 'package:mocktail/mocktail.dart';
 import '../../dummy_data/dummy_objects.dart';
 import 'test_helper/test_helper.dart';
+// ignore: unused_import
 import 'movie_detail_page_test.mocks.dart';
 
 @GenerateMocks([MovieDetailBloc])
@@ -69,7 +70,7 @@ void main() {
 
   final routes = <String, WidgetBuilder>{
     '/': (context) => const FakeHome(),
-    '/next': (context) => _makeAnotherTestableWidget(MovieDetailPage(
+    '/next': (context) => _makeAnotherTestableWidget(const MovieDetailPage(
           id: 1,
         )),
     MovieDetailPage.ROUTE_NAME: (context) => const FakeDestination(),
@@ -100,7 +101,7 @@ void main() {
     await tester.pumpWidget(
         _makeTestableWidget(MovieDetailPage(id: testMovieDetail.id)));
 
-    expect(find.byKey(Key('error_message')), findsOneWidget);
+    expect(find.byKey(const Key('error_message')), findsOneWidget);
   });
 
   testWidgets('should show empty message progress when movie detail is empty',
@@ -114,7 +115,7 @@ void main() {
     await tester.pumpWidget(
         _makeTestableWidget(MovieDetailPage(id: testMovieDetail.id)));
 
-    expect(find.byKey(Key('empty_message')), findsOneWidget);
+    expect(find.byKey(const Key('empty_message')), findsOneWidget);
   });
 
   testWidgets(
@@ -246,7 +247,7 @@ void main() {
     await tester.pumpWidget(
         _makeTestableWidget(MovieDetailPage(id: testMovieDetail.id)));
 
-    expect(find.byKey(Key('error_message')), findsOneWidget);
+    expect(find.byKey(const Key('error_message')), findsOneWidget);
   });
 
   testWidgets('should show text empty when movie recom is empty',
@@ -261,7 +262,7 @@ void main() {
     await tester.pumpWidget(
         _makeTestableWidget(MovieDetailPage(id: testMovieDetail.id)));
 
-    expect(find.byKey(Key('empty_message')), findsOneWidget);
+    expect(find.byKey(const Key('empty_message')), findsOneWidget);
   });
 
   testWidgets(

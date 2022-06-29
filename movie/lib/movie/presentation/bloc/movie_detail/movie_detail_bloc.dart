@@ -17,6 +17,7 @@ class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
     on<MovieDetailCalled>(_MovieDetailCalled);
   }
 
+  // ignore: non_constant_identifier_names
   FutureOr<void> _MovieDetailCalled(
     MovieDetailCalled movieDetailEvent,
     Emitter<MovieDetailState> emit,

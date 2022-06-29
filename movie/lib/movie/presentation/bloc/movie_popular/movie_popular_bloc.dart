@@ -18,6 +18,7 @@ class MoviePopularBloc extends Bloc<MoviePopularEvent, MoviePopularState> {
     on<MoviePopularCalled>(_MoviePopularCalled);
   }
 
+  // ignore: non_constant_identifier_names
   FutureOr<void> _MoviePopularCalled(
     MoviePopularCalled event,
     Emitter<MoviePopularState> emit,

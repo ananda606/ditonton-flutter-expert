@@ -20,6 +20,7 @@ class MovieRecommendationBloc
     on<MovieRecommendationCalled>(_MovieRecommendationCalled);
   }
 
+  // ignore: non_constant_identifier_names
   FutureOr<void> _MovieRecommendationCalled(
     MovieRecommendationCalled event,
     Emitter<MovieRecommendationState> emit,

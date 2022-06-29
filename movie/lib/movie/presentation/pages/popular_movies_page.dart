@@ -32,7 +32,7 @@ class _PopularMoviesPageState extends State<PopularMoviesPage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: BlocBuilder<MoviePopularBloc, MoviePopularState>(
-          key: Key('popularpage'),
+          key: const Key('popularpage'),
           builder: (context, state) {
             if (state is MoviePopularLoading) {
               return const Center(

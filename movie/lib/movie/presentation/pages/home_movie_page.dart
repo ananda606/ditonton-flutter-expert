@@ -44,7 +44,7 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
-          key: Key('home_movie'),
+          key: const Key('home_movie'),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

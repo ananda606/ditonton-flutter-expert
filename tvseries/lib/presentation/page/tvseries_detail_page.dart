@@ -70,20 +70,25 @@ class _TVSeriesDetailPageState extends State<TVSeriesDetailPage> {
   }
 }
 
-class DetailContent extends StatelessWidget {
+class DetailContent extends StatefulWidget {
   final TVSeriesDetail tv;
-  final bool isAddedWatchlist;
+  bool isAddedWatchlist;
 
   // ignore: use_key_in_widget_constructors
-  const DetailContent(this.tv, this.isAddedWatchlist);
+  DetailContent(this.tv, this.isAddedWatchlist);
 
+  @override
+  State<DetailContent> createState() => _DetailContentState();
+}
+
+class _DetailContentState extends State<DetailContent> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Stack(
       children: [
         CachedNetworkImage(
-          imageUrl: 'https://image.tmdb.org/t/p/w500${tv.posterPath}',
+          imageUrl: 'https://image.tmdb.org/t/p/w500${widget.tv.posterPath}',
           width: screenWidth,
           placeholder: (context, url) => const Center(
             child: CircularProgressIndicator(),
@@ -114,19 +119,18 @@ class DetailContent extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              tv.name,
+                              widget.tv.name,
                               style: kHeading5,
                             ),
                             ElevatedButton(
                               onPressed: () async {
-                                if (!isAddedWatchlist) {
+                                if (!widget.isAddedWatchlist) {
                                   context
                                       .read<TVSeriesWatchlistBloc>()
-                                      .add(AddTVSeriesToWatchlist(tv));
+                                      .add(AddTVSeriesToWatchlist(widget.tv));
                                 } else {
-                                  context
-                                      .read<TVSeriesWatchlistBloc>()
-                                      .add(RemoveTVSeriesFromWatchlist(tv));
+                                  context.read<TVSeriesWatchlistBloc>().add(
+                                      RemoveTVSeriesFromWatchlist(widget.tv));
                                 }
 
                                 final message = context
@@ -138,7 +142,7 @@ class DetailContent extends StatelessWidget {
                                               false
                                           ? const Text('Added to Watchlist')
                                           : const Text('Removed from watchlist')
-                                      : !isAddedWatchlist
+                                      : !widget.isAddedWatchlist
                                           ? const Text('added to watchlist')
                                           : const Text(
                                               'removed from watchlist'),
@@ -159,11 +163,15 @@ class DetailContent extends StatelessWidget {
                                         );
                                       });
                                 }
+                                setState(() {
+                                  widget.isAddedWatchlist =
+                                      !widget.isAddedWatchlist;
+                                });
                               },
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  isAddedWatchlist
+                                  widget.isAddedWatchlist
                                       ? const Icon(Icons.check)
                                       : const Icon(Icons.add),
                                   const Text('Watchlist'),
@@ -171,11 +179,12 @@ class DetailContent extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              _showGenres(tv.genres),
+                              _showGenres(widget.tv.genres),
                             ),
                             IntrinsicHeight(
                               child: Row(children: [
-                                Text(_showNumberOfSeasons(tv.numberOfSeasons)),
+                                Text(_showNumberOfSeasons(
+                                    widget.tv.numberOfSeasons)),
                                 const Padding(
                                   padding: EdgeInsets.all(2.0),
                                   child: VerticalDivider(
@@ -184,14 +193,14 @@ class DetailContent extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  _showDuration(tv.episodeRuntime[0]),
+                                  _showDuration(widget.tv.episodeRuntime[0]),
                                 ),
                               ]),
                             ),
                             Row(
                               children: [
                                 RatingBarIndicator(
-                                  rating: tv.voteAverage / 2,
+                                  rating: widget.tv.voteAverage / 2,
                                   itemCount: 5,
                                   itemBuilder: (context, index) => const Icon(
                                     Icons.star,
@@ -199,7 +208,7 @@ class DetailContent extends StatelessWidget {
                                   ),
                                   itemSize: 24,
                                 ),
-                                Text('${tv.voteAverage}')
+                                Text('${widget.tv.voteAverage}')
                               ],
                             ),
                             const SizedBox(height: 16),
@@ -208,7 +217,7 @@ class DetailContent extends StatelessWidget {
                               style: kHeading6,
                             ),
                             Text(
-                              tv.overview,
+                              widget.tv.overview,
                             ),
                             const SizedBox(height: 16),
                             Text(
@@ -217,10 +226,10 @@ class DetailContent extends StatelessWidget {
                             ),
                             ListView.builder(
                               itemBuilder: (context, index) {
-                                return SeasonCard(tv.seasons[index]);
+                                return SeasonCard(widget.tv.seasons[index]);
                               },
                               shrinkWrap: true,
-                              itemCount: tv.seasons.length,
+                              itemCount: widget.tv.seasons.length,
                               physics: const NeverScrollableScrollPhysics(),
                             ),
                             Text(
@@ -284,7 +293,7 @@ class DetailContent extends StatelessWidget {
                                   );
                                 } else {
                                   return Container(
-                                    key: Key('empty_message'),
+                                    key: const Key('empty_message'),
                                   );
                                 }
                               },

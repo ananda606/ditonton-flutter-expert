@@ -32,7 +32,7 @@ class _TopRatedMoviesPageState extends State<TopRatedMoviesPage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: BlocBuilder<MovieTopRatedBloc, MovieTopRatedState>(
-          key: Key('top_rated_page'),
+          key: const Key('top_rated_page'),
           builder: (context, state) {
             if (state is MovieTopRatedLoading) {
               return const Center(

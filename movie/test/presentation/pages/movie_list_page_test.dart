@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+// ignore: depend_on_referenced_packages
 import 'package:mocktail/mocktail.dart';
-import 'package:bloc_test/bloc_test.dart';
-import 'package:watchlist/watchlist.dart';
 import 'package:movie/movie.dart';
-import 'package:search/search.dart';
-import 'package:core/core.dart';
 import 'test_helper/test_helper.dart';
 
 import '../../dummy_data/dummy_objects.dart';
@@ -51,32 +48,6 @@ void main() {
     );
   }
 
-  Widget _createAnotherTestableWidget(Widget body) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<MovieListBloc>(
-          create: (context) => fakeMovieListBloc,
-        ),
-        BlocProvider<MoviePopularBloc>(
-          create: (context) => fakeMoviePopularBloc,
-        ),
-        BlocProvider<MovieTopRatedBloc>(
-          create: (context) => fakeMovieTopBloc,
-        ),
-      ],
-      child: body,
-    );
-  }
-
-  final routes = <String, WidgetBuilder>{
-    '/': (context) => const FakeHome(),
-    '/next': (context) => _createAnotherTestableWidget(HomeMoviePage()),
-    MovieDetailPage.ROUTE_NAME: (context) => const FakeDestination(),
-    TopRatedMoviesPage.ROUTE_NAME: (context) => const FakeDestination(),
-    PopularMoviesPage.ROUTE_NAME: (context) => const FakeDestination(),
-    SearchPage.ROUTE_NAME: (context) => const FakeDestination(),
-  };
-
   testWidgets('Page should display center progress bar when loading',
       (tester) async {
     when(() => fakeMovieListBloc.state).thenReturn(MovieListLoading());
@@ -85,7 +56,7 @@ void main() {
 
     final progressBarFinder = find.byType(CircularProgressIndicator);
 
-    await tester.pumpWidget(_createTestableWidget(HomeMoviePage()));
+    await tester.pumpWidget(_createTestableWidget(const HomeMoviePage()));
 
     expect(progressBarFinder, findsNWidgets(3));
   });
@@ -102,7 +73,7 @@ void main() {
     final listViewFinder = find.byType(ListView);
     final tvListFinder = find.byType(MovieList);
 
-    await tester.pumpWidget(_createTestableWidget(HomeMoviePage()));
+    await tester.pumpWidget(_createTestableWidget(const HomeMoviePage()));
 
     expect(listViewFinder, findsNWidgets(3));
     expect(tvListFinder, findsNWidgets(3));
@@ -114,7 +85,7 @@ void main() {
         .thenReturn(MoviePopularError('error'));
     when(() => fakeMovieTopBloc.state).thenReturn(MovieTopRatedError('error'));
 
-    await tester.pumpWidget(_createTestableWidget(HomeMoviePage()));
+    await tester.pumpWidget(_createTestableWidget(const HomeMoviePage()));
 
     expect(find.byKey(const Key('error_message')), findsNWidgets(3));
   });
@@ -124,7 +95,7 @@ void main() {
     when(() => fakeMoviePopularBloc.state).thenReturn(MoviePopularEmpty());
     when(() => fakeMovieTopBloc.state).thenReturn(MovieTopRatedEmpty());
 
-    await tester.pumpWidget(_createTestableWidget(HomeMoviePage()));
+    await tester.pumpWidget(_createTestableWidget(const HomeMoviePage()));
 
     expect(find.byKey(const Key('empty_message')), findsNWidgets(3));
   });

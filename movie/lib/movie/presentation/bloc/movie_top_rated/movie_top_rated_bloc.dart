@@ -18,6 +18,7 @@ class MovieTopRatedBloc extends Bloc<MovieTopRatedEvent, MovieTopRatedState> {
     on<MovieTopRatedCalled>(_MovieTopRatedCalled);
   }
 
+  // ignore: non_constant_identifier_names
   FutureOr<void> _MovieTopRatedCalled(
     MovieTopRatedCalled event,
     Emitter<MovieTopRatedState> emit,

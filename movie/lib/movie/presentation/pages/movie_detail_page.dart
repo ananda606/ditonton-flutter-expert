@@ -70,20 +70,25 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   }
 }
 
-class DetailContent extends StatelessWidget {
+class DetailContent extends StatefulWidget {
   final MovieDetail movie;
-  final bool isAddedWatchlist;
+  bool isAddedWatchlist;
 
   // ignore: use_key_in_widget_constructors
-  const DetailContent(this.movie, this.isAddedWatchlist);
+  DetailContent(this.movie, this.isAddedWatchlist);
 
+  @override
+  State<DetailContent> createState() => _DetailContentState();
+}
+
+class _DetailContentState extends State<DetailContent> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Stack(
       children: [
         CachedNetworkImage(
-          imageUrl: 'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+          imageUrl: 'https://image.tmdb.org/t/p/w500${widget.movie.posterPath}',
           width: screenWidth,
           placeholder: (context, url) => const Center(
             child: CircularProgressIndicator(),
@@ -114,19 +119,18 @@ class DetailContent extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              movie.title,
+                              widget.movie.title,
                               style: kHeading5,
                             ),
                             ElevatedButton(
                               onPressed: () async {
-                                if (!isAddedWatchlist) {
+                                if (!widget.isAddedWatchlist) {
                                   context
                                       .read<MovieWatchlistBloc>()
-                                      .add(AddMovieToWatchlist(movie));
+                                      .add(AddMovieToWatchlist(widget.movie));
                                 } else {
-                                  context
-                                      .read<MovieWatchlistBloc>()
-                                      .add(RemoveMovieFromWatchlist(movie));
+                                  context.read<MovieWatchlistBloc>().add(
+                                      RemoveMovieFromWatchlist(widget.movie));
                                 }
 
                                 final message =
@@ -138,7 +142,7 @@ class DetailContent extends StatelessWidget {
                                               false
                                           ? const Text('Added to Watchlist')
                                           : const Text('Removed from watchlist')
-                                      : !isAddedWatchlist
+                                      : !widget.isAddedWatchlist
                                           ? const Text('added to watchlist')
                                           : const Text(
                                               'removed from watchlist'),
@@ -159,11 +163,15 @@ class DetailContent extends StatelessWidget {
                                         );
                                       });
                                 }
+                                setState(() {
+                                  widget.isAddedWatchlist =
+                                      !widget.isAddedWatchlist;
+                                });
                               },
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  isAddedWatchlist
+                                  widget.isAddedWatchlist
                                       ? const Icon(Icons.check)
                                       : const Icon(Icons.add),
                                   const Text('Watchlist'),
@@ -171,15 +179,15 @@ class DetailContent extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              _showGenres(movie.genres),
+                              _showGenres(widget.movie.genres),
                             ),
                             Text(
-                              _showDuration(movie.runtime),
+                              _showDuration(widget.movie.runtime),
                             ),
                             Row(
                               children: [
                                 RatingBarIndicator(
-                                  rating: movie.voteAverage / 2,
+                                  rating: widget.movie.voteAverage / 2,
                                   itemCount: 5,
                                   itemBuilder: (context, index) => const Icon(
                                     Icons.star,
@@ -187,7 +195,7 @@ class DetailContent extends StatelessWidget {
                                   ),
                                   itemSize: 24,
                                 ),
-                                Text('${movie.voteAverage}')
+                                Text('${widget.movie.voteAverage}')
                               ],
                             ),
                             const SizedBox(height: 16),
@@ -196,7 +204,7 @@ class DetailContent extends StatelessWidget {
                               style: kHeading6,
                             ),
                             Text(
-                              movie.overview,
+                              widget.movie.overview,
                             ),
                             const SizedBox(height: 16),
                             Text(
@@ -213,7 +221,7 @@ class DetailContent extends StatelessWidget {
                                 } else if (state is MovieRecommendationError) {
                                   return Text(
                                     state.message,
-                                    key: Key('error_message'),
+                                    key: const Key('error_message'),
                                   );
                                 } else if (state
                                     is MovieRecommendationHasData) {
@@ -258,7 +266,7 @@ class DetailContent extends StatelessWidget {
                                     ),
                                   );
                                 } else {
-                                  return Text(
+                                  return const Text(
                                     'empty',
                                     key: Key('empty_message'),
                                   );
